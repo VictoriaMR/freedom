@@ -1,4 +1,7 @@
 <?php
+
+namespace frame;
+
 class Response
 {
     // header参数
@@ -8,7 +11,7 @@ class Response
 		'Cache-Control' => 'no-store,no-cache,must-revalidate',
     ];
 
-    public static function send($data = '', $type = 0, $code = 200, array $header = [], $options = [])
+    public static function send($code = 200, $header = [])
     {
         // 处理输出数据
         if (!headers_sent()) {
@@ -18,7 +21,6 @@ class Response
         		self::$header['Content-Type'] = 'application/json; charset=utf-8';
         	self::setHeader();
         }
-        echo $data;
         if (function_exists('fastcgi_finish_request')) {
             // 提高页面响应
             fastcgi_finish_request();

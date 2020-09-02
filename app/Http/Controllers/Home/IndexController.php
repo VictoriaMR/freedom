@@ -14,9 +14,14 @@ class IndexController extends Controller
 			$info = $weixinService->getUserInfoByCode($code);
 			if (!empty($info)) {			
 				$memberId = $weixinService->addNotExist($info);
-				dd($memberId);
 				if (!empty($memberId)) {
-					
+					$memberService = make('App/Services/MemberService');
+					$res = $memberService->login($memberId);
+					if ($res) {
+						$this->result(200, $res);
+					} else {
+						$message = '登陆失败';
+					}
 				} else {
 					$message = '登陆失败, 新增用户失败';
 				}

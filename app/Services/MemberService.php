@@ -67,4 +67,22 @@ class MemberService extends BaseService
         $cacheKey = self::INFO_CACHE_KEY.$memberId;
         return redis()->del($cacheKey);
     }
+
+    public function isExist($memberId)
+    {
+        return $this->baseModel->isExist($memberId);
+    }
+
+    public function login($memberId, $type=0)
+    {
+        if (empty($memberId)) return false;
+        if (!$this->isExist($memberId)) return false;
+
+        return $this->generateToken($memberId, $type);
+    }
+
+    protected function generateToken($memberId, $type)
+    {
+        return ['access_token'=> '112233', 'refrash_token' => '445566'];
+    }
 }

@@ -23,4 +23,9 @@ class Member extends BaseModel
     	$this->commit(); //事务结束
     	return $memberId;
     }
+
+    public function isExist($memberId)
+    {
+        return $this->where($memberId, (int) $memberId)->count() > 0;
+    }
 }
