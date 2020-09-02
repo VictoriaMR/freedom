@@ -6,7 +6,7 @@ var URI = "<?php echo env('APP_DOMAIN');?>";
 $(function(){
     var res = API.post(URI+'index/checktoken', {});
     if (res.code != 200) {
-        // window.location.href = res.data.url;
+        window.location.href = res.data.url;
     }
 })
 </script>

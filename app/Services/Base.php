@@ -97,6 +97,11 @@ class Base
         return str_replace(['-', ':', ' '], '', date('Y-m-d H:i:s', time())).strtolower($this->getSalt(8));
     }
 
+    public function getTime()
+    {
+        return $this->baseModel->getTime();
+    }
+
     public function getSalt($len = 4)
     {
         $chars = [
