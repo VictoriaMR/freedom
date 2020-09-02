@@ -70,7 +70,7 @@ Class Query
 		$this->_columns = is_array($columns) ? $columns : [$columns];
 		$result = $this->get();
 		if (empty($result)) return '';
-		$result = array_column($result, $result);
+		$result = array_column($result, $columns);
 		if (count($result) == 1) return $result[0];
 		return $result;
 	}

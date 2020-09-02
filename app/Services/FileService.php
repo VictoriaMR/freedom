@@ -127,6 +127,7 @@ class FileService extends BaseService
             mkdir($tempfile, 0755, true);
         $tempfile .= $this->getName().'.jpg';
         file_put_contents($tempfile, $data);
+        dd($tempfile);
         $attach = $this->addNotExist($tempfile, $cate);
         unlink($tempfile);
         return $attach;
