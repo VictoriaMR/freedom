@@ -1,0 +1,5 @@
+.env
+composer.lock
+runtime/*
+vendor/*
+upload/*
