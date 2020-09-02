@@ -26,6 +26,6 @@ class Member extends BaseModel
 
     public function isExist($memberId)
     {
-        return $this->where($memberId, (int) $memberId)->count() > 0;
+        return $this->where('mem_id', (int) $memberId)->count() > 0;
     }
 }

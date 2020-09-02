@@ -85,4 +85,9 @@ class MemberService extends BaseService
     {
         return ['access_token'=> '112233', 'refrash_token' => '445566'];
     }
+
+    public function checkToken($access_token, $refrash_token)
+    {
+        return ['access_token'=> '112233', 'refrash_token' => '445566'];
+    }
 }

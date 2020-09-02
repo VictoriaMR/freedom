@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Controller;
 
-class IndexController extends Controller
+class ChatController extends Controller
 {
 	public function index()
 	{
@@ -29,28 +29,5 @@ class IndexController extends Controller
 			];
 			$this->result(301, ['url'=>url('https://open.weixin.qq.com/connect/oauth2/authorize', $param).'#wechat_redirect'], ['message' => 'nologin']);
 		}
-	}
-
-	public function loginByCode()
-	{
-		$code = iget('code');
-		if (empty($code))
-			$this->result(10000, false, ['message' => '参数错误']);
-
-		$weixinService = make('App/Services/WeixinService');
-		$info = $weixinService->getUserInfoByCode($code);
-		if (empty($info))
-			$this->result(10000, false, ['message' => '登陆失败, 获取信息不成功']);
-
-		$memberId = $weixinService->addNotExist($info);
-		if(empty($memberId))
-			$this->result(10000, false, ['message' => '登陆失败, 新增用户失败']);
-
-		$memberService = make('App/Services/MemberService');
-		$res = $memberService->login($memberId);
-		if (!$res) 
-			$this->result(10000, false, ['message' => '登陆失败']);
-
-		$this->result(200, array_merge(['url'=>url('chat')], $res));
 	}
 }
