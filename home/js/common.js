@@ -13,6 +13,8 @@ var API = {
 	  		},
 		    success: function(data, textStatus, jqXHR){
 		        if (data.code == 201) {
+		        	localStorage.setItem('access_token', '');
+		        	localStorage.setItem('refresh_token', '');
 		        	var retryCount = localStorage.getItem('retry_count');
 		        	retryCount = retryCount ? retryCount : 0;
 		        	if (retryCount < 10) {
@@ -43,6 +45,8 @@ var API = {
 	  		},
 		    success: function(data, textStatus, jqXHR){
 		    	if (data.code == 201) {
+		    		localStorage.setItem('access_token', '');
+		        	localStorage.setItem('refresh_token', '');
 		    		var retryCount = localStorage.getItem('retry_count');
 		    		retryCount = retryCount ? retryCount : 0;
 		    		if (retryCount < 10) {
