@@ -9,21 +9,18 @@ class Html
 
 	public static function addCss($name = '', $public = false)
 	{
-		if (empty($name)) return false;
-		if (is_array($name)) {
-			foreach ($name as $value) {
-				self::$_CSS[] = env('APP_DOMAIN') . 'css/' . ($public ? '' : \frame\Router::$_route['path'].'/') . $value . '.css';
-			}
+		if (!is_array($name)) $name = [$name];
+		foreach ($name as $value) {
+			self::$_CSS[] = env('APP_DOMAIN') . 'css/' . ($public ? '' : \frame\Router::$_route['path'].'/') . $value . '.css';
 		}
 	}
 
 	public static function addJs($name = '', $public = false)
 	{
 		if (empty($name)) return false;
-		if (is_array($name)) {
-			foreach ($name as $value) {
-				self::$_JS[] = env('APP_DOMAIN') . 'js/' . ($public ? '' : \frame\Router::$_route['path'].'/') . $value . '.js';
-			}
+		if (!is_array($name)) $name = [$name];
+		foreach ($name as $value) {
+			self::$_JS[] = env('APP_DOMAIN') . 'js/' . ($public ? '' : \frame\Router::$_route['path'].'/') . $value . '.js';
 		}
 		return true;
 	}

@@ -116,7 +116,7 @@ class MemberService extends BaseService
 
     public function getToken($token)
     {
-        return $this->generateToken('1000000001', 1);
+        // return $this->generateToken('1000000001', 1);
         if (empty($token)) return false;
         $data = redis(1)->get($token);
         if (empty($data)) return false;
