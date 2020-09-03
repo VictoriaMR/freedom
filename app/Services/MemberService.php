@@ -8,6 +8,8 @@ class MemberService extends BaseService
 {	
     const INFO_CACHE_KEY = 'MEMBER_INFO_CACHE_';
     const INFO_CACHE_EXPIRETIME = 60*60*24;
+    const TOKEN_EXPIRED = 60*60*8;
+    const REFRESH_TOKEN_EXPIRED = 60*60*24*15;
 
 	public function __construct(Member $model)
     {
@@ -83,11 +85,65 @@ class MemberService extends BaseService
 
     protected function generateToken($memberId, $type)
     {
-        return ['access_token'=> '112233', 'refrash_token' => '445566'];
+        $token = $refreshToken = null;
+        $maxTrayCount = 10;
+        
+        //生成token
+        $counter = 0;
+        do {
+            $token = \frame\Str::random(32);
+        } while (redis(1)->exists($token) && ($counter++) < $maxTrayCount);
+
+        $counter = 0;
+        do {
+            $refreshToken = \frame\Str::random(32);
+        } while (redis(1)->exists($refreshToken) && ($counter++) < $maxTrayCount);
+
+        if (empty($token) || empty($refreshToken)) return false;
+        
+        $expiresIn = self::TOKEN_EXPIRED; //8小时
+        $refreshExpiresIn = self::REFRESH_TOKEN_EXPIRED; //15天
+               
+        redis(1)->set($token, implode(':', [$memberId, $type, $refreshToken]));
+        redis(1)->set($refreshToken, implode(':', [$memberId, $type, $token, $refreshExpiresIn, time()]), $refreshExpiresIn);
+        
+        return [
+            'access_token' => $token,
+            'refresh_token' => $refreshToken,
+            'expires_in' => $expiresIn, // 换成秒
+        ];
     }
 
-    public function checkToken($access_token, $refrash_token)
+    public function getToken($token)
     {
-        return ['access_token'=> '112233', 'refrash_token' => '445566'];
+        return $this->generateToken('1000000001', 1);
+        if (empty($token)) return false;
+        $data = redis(1)->get($token);
+        if (empty($data)) return false;
+        return array_combine(['member_id', 'type', 'refresh_token'], explode(':', $data));
+    }
+
+    public function getRefreshToken($refreshToken)
+    {
+        if (empty($refreshToken)) return false;
+        $data = redis(1)->get($refreshToken);
+        if (empty($data)) return false;
+        return array_combine(['member_id', 'type', 'token', 'expires', 'create_at'], explode(':', $data));
+    }
+
+    public function refreshToken($refreshToken) 
+    {
+        $data = $this->getRefreshToken($refreshToken);
+        if (empty($data)) return false;
+        $maxTrayCount = 10;
+        //生成token
+        $counter = 0;
+        do {
+            $token = \frame\Str::random(32);
+        } while (redis(1)->exists($token) && ($counter++) < $maxTrayCount);
+
+        redis(1)->set($token, implode(':', [$memberId, $type, $refreshToken]), self::TOKEN_EXPIRED);
+
+        return $token;
     }
 }

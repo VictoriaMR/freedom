@@ -9,9 +9,17 @@ var API = {
 			data: param,
 		    headers: {
 	  			'Access-Token': localStorage.getItem('access_token'), 
-	  			'Refrash-Token': localStorage.getItem('refrash_token')
+	  			'Refrash-Token': localStorage.getItem('refresh_token')
 	  		},
 		    success: function(data, textStatus, jqXHR){
+		        if (data.code == 201) {
+		        	var retryCount = localStorage.getItem('retry_count');
+		        	retryCount = retryCount ? retryCount : 0;
+		        	if (retryCount < 10) {
+			        	localStorage.setItem('retry_count', parseInt(retryCount) + 1);
+			        	window.location.href = URI;
+		    		}
+		        }
 		        if (callback) callback(data);
 				returnData = data;
 		    } ,
@@ -34,6 +42,14 @@ var API = {
 	  			'Refrash-Token': localStorage.getItem('refrash_token')
 	  		},
 		    success: function(data, textStatus, jqXHR){
+		    	if (data.code == 201) {
+		    		var retryCount = localStorage.getItem('retry_count');
+		    		retryCount = retryCount ? retryCount : 0;
+		    		if (retryCount < 10) {
+			        	localStorage.setItem('retry_count', parseInt(retryCount) + 1);
+			        	window.location.href = URI;
+		    		}
+		        }
 		        if (callback) callback(data);
 				returnData = data;
 		    } ,

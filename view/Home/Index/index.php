@@ -23,16 +23,16 @@
 	</style>
 </div>
 <script type="text/javascript">
-var URI = "<?php echo env('APP_DOMAIN');?>";
 $(function(){
-	var code = '<?php echo iget('code', '');?>';
+	var code = '<?php echo iget('code');?>';
 	if (!code) {
 	    var res = API.post(URI+'index/checktoken', {});
 	    if (res.code == 200) {
 	    	localStorage.setItem('access_token', res.data.access_token);
-	    	localStorage.setItem('refrash_token', res.data.refrash_token);
+	    	localStorage.setItem('retry_count', 0);
 	        window.location.href = res.data.url;
 	    } else if(res.code == 301) {
+	    	localStorage.setItem('retry_count', 0);
 	    	window.location.href = res.data.url;
 	    } else {
 	    	$('#message').text(res.message);

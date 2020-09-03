@@ -14,6 +14,9 @@
     <?php }?>
 </head>
 <body>
+<script type="text/javascript">
+var URI = "<?php echo env('APP_DOMAIN');?>";
+</script>
 <style type="text/css">
 * {
     margin: 0;
