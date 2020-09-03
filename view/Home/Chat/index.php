@@ -26,17 +26,13 @@
 </div>
 <script type="text/javascript">
 $(function(){
-	if (!localStorage.getItem('access_token') || !localStorage.getItem('refresh_token')) {
-		$('#content').html('<div style="text-align: center; margin-top: 40%;"><img style="max-width:100%;max-height:100%;" src="<?php echo url('image/error.png');?>"></div>');
-	} else {
-		var res = API.post(URI+'index/checktoken', {});
-		if (res.code == 200) {
-	    	localStorage.setItem('access_token', res.data.access_token);
-	    } else if(res.code == 301) {
-	    } else {
-	    	$('#message').text(res.message);
-	    }
-	}
+	var res = API.post(URI+'index/checktoken', {});
+	if (res.code == 200) {
+    	localStorage.setItem('access_token', res.data.access_token);
+    } else if(res.code == 301) {
+    } else {
+    	$('#content').html('<div style="text-align: center; margin-top: 40%;"><img style="max-width:100%;max-height:100%;" src="<?php echo url('image/error.png');?>"></div>');
+    }
 });
 </script>
 <?php $this->load('Common.footer');?>
