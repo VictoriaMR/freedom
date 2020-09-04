@@ -1,16 +1,14 @@
 var API = {
 	get: function(url, param, callback) {
 		var returnData = {};
+		var header = this.header();
 		$.ajax( {
 		    url: url,
 		    async: false,
 		    type: 'GET',
 		    dataType: 'json',
 			data: param,
-		    headers: {
-	  			'Access-Token': localStorage.getItem('access_token'), 
-	  			'Refrash-Token': localStorage.getItem('refresh_token')
-	  		},
+		    headers: header,
 		    success: function(data, textStatus, jqXHR){
 		        if (data.code == 201) {
 		        	localStorage.setItem('access_token', '');
@@ -33,16 +31,14 @@ var API = {
 	},
 	post: function(url, param, callback) {
 		var returnData = {};
+		var header = this.header();
 		$.ajax( {
 		    url: url,
 		    async: false,
 		    type: 'POST',
 		    dataType: 'json',
 			data: param,
-		    headers: {
-	  			'Access-Token': localStorage.getItem('access_token'), 
-	  			'Refrash-Token': localStorage.getItem('refrash_token')
-	  		},
+		    headers: header,
 		    success: function(data, textStatus, jqXHR){
 		    	if (data.code == 201) {
 		    		localStorage.setItem('access_token', '');
@@ -63,4 +59,15 @@ var API = {
 		});
 		return returnData;
 	},
+	header: function()
+	{
+		var data = [];
+		var token = localStorage.getItem('access_token');
+		if (token)
+			data['Access-Token'] = token;
+		token = localStorage.getItem('refresh_token');
+		if (token)
+			data['Refresh-Token'] = token;
+		return data;
+	}
 };

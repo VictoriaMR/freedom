@@ -17,18 +17,3 @@
 <script type="text/javascript">
 var URI = "<?php echo env('APP_DOMAIN');?>";
 </script>
-<style type="text/css">
-* {
-    margin: 0;
-    padding: 0;
-}
-html {
-    font-size: 100px;
-}
-body {
-    font-family: 'Open Sans', sans-serif, '宋体';
-    font-size: 0.12rem;
-    color: #333333;
-    font-weight: 100%;
-}
-</style>

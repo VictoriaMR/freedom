@@ -29,11 +29,12 @@ class App
         $class = 'App\\Http\\Controllers\\'.($info['class'] ? $info['class'].'\\' : '').$info['path'].'Controller';
         //中间组件
         $handle = make('App\Http\Middleware\VerifyToken');
-        $handle = $handle->handle();
+        $handle = $handle->handle($info);
 
         //公共样式
         if (!isAjax()) {
             \frame\Html::addJs(['jquery', 'common'], true);
+            \frame\Html::addCss(['common', 'iconfont'], true);
         }
 
         if (is_callable([self::autoload($class), $info['func']])) {

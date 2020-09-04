@@ -31,4 +31,11 @@ class BindRelation extends BaseModel
     				->where('mem_id', $memberId)
     				->count() > 0;
     }
+
+    public function getIdByOpenid($openid, $type = 0)
+    {
+        return $this->where('openid', $openid)
+                    ->where('type', $type)
+                    ->value('mem_id');
+    }
 }

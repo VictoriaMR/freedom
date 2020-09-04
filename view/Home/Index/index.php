@@ -1,16 +1,19 @@
 <?php $this->load('Common.header');?>
 <div id="message">
-	<div style="text-align: center; margin-top: calc(50vh - 0.68rem);">
-		<img class="turn" src="<?php echo url('image/loading.png');?>">
+	<div class="middle">
+		<img class="loading" style="width: 0.68rem;height: 0.68rem;" src="<?php echo url('image/loading.png');?>">
 	</div>
-	<div style="text-align: center;margin-top: 0.2rem;">
-		<span style="font-size: 0.16rem;">登录中...</span>
+	<div class="text-center margin-top-10">
+		<span>登录中...</span>
 	</div>
 </div>
 <script type="text/javascript">
 $(function(){
+	<?php if (!empty($key)) { ?>
+	localStorage.setItem('group_key', '<?php echo $key;?>');
+	<?php } ?>
 	var code = '<?php echo iget('code');?>';
-	INDEX.init(code);
+	INDEX.init(code, '<?php echo url('image/error.png');?>');
 });
 </script>
 <?php $this->load('Common.footer');?>

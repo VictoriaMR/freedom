@@ -8,13 +8,20 @@ class IndexController extends Controller
 {
 	public function index()
 	{
-		Html::addCss('index');
 		Html::addJs('index');
+
+		$key = iget('k', '');
+		$this->assign('key', $key);
+		
 		return view();
 	}
 
 	public function checktoken()
 	{
+		$memberService = make('App/Services/MemberService');
+		$res = $memberService->login('1000000000', 1);
+		$this->result(200, array_merge(['url'=>url('chat')], $res), ['message' => 'keep login']);
+
 		$headers = getallheaders();
 		$access_token = $headers['Access-Token'] ?? null;
 		$refrash_token = $headers['Refrash-Token'] ?? null;

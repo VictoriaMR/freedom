@@ -10,6 +10,7 @@ class MemberService extends BaseService
     const INFO_CACHE_EXPIRETIME = 60*60*24;
     const TOKEN_EXPIRED = 60*60*8;
     const REFRESH_TOKEN_EXPIRED = 60*60*24*15;
+    const SPECIAL_MEMBER = [1000000000];
 
 	public function __construct(Member $model)
     {
@@ -42,10 +43,10 @@ class MemberService extends BaseService
     public function getInfoCache($memberId)
     {
         if (empty($memberId)) return [];
-        self::INFO_CACHE_KEY.$memberId;
+        $cacheKey = self::INFO_CACHE_KEY.$memberId;
         $info = redis()->get($cacheKey);
         if (empty($info)) {
-            $info = $this->getInfo();
+            $info = $this->getInfo($memberId);
             redis()->set($cacheKey, $info, self::INFO_CACHE_EXPIRETIME);
         }
         return $info;
@@ -116,11 +117,17 @@ class MemberService extends BaseService
 
     public function getToken($token)
     {
-        // return $this->generateToken('1000000001', 1);
         if (empty($token)) return false;
         $data = redis(1)->get($token);
         if (empty($data)) return false;
         return array_combine(['member_id', 'type', 'refresh_token'], explode(':', $data));
+    }
+
+    public function checkToken($token, $type)
+    {
+        $data = $this->getToken($token);
+        if (empty($data)) return false;
+        return $type == $data['type'];
     }
 
     public function getRefreshToken($refreshToken)
@@ -145,5 +152,10 @@ class MemberService extends BaseService
         redis(1)->set($token, implode(':', [$memberId, $type, $refreshToken]), self::TOKEN_EXPIRED);
 
         return $token;
+    }
+
+    public function specialMember($memberId)
+    {
+        return in_array($memberId, self::SPECIAL_MEMBER);
     }
 }

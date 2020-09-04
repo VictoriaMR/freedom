@@ -13,9 +13,6 @@ class BindRelationService extends BaseService
 
     public function getIdByOpenid($openid, $type = 0)
     {
-    	return $this->baseModel->where('openid', $openid)
-    						   ->where('type', $type)
-    						   ->value('mem_id');
+    	return $this->baseModel->getIdByOpenid($openid, $type);
     }
-
 }
