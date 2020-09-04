@@ -22,6 +22,25 @@ var CHAT = {
 		if (!this.key) this.error();
 		var res = API.post(URI+'chat/create', {key: this.key});
 		if (res.code == 200) {
+			$('#content').html('<div class="content container bg-f"></div>\
+				<div class="footer bg-f8">\
+					<div class="container flex">\
+						<div class="item">\
+							<i class="iconfont icon-jianpan font-30 keyboard-btn"></i>\
+						</div>\
+						<div class="item input-item">\
+							<div class="container-10 margin-right-10">\
+								<input type="input" name="value" class="input" maxlength="100">\
+							</div>\
+						</div>\
+						<div class="item buttom-item margin-right-10">\
+							<span href="javascript:;" class="btn btn-green send-btn">发送</span>\
+						</div>\
+						<div class="item">\
+							<i class="iconfont icon-add font-30 other-btn"></i>\
+						</div>\
+					</div>\
+				</div>');
 			var html = this.createHtml(res.data);
 			$('#content .content').html(html);
 			this.toBottom();
