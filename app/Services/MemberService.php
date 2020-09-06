@@ -44,7 +44,7 @@ class MemberService extends BaseService
     {
         if (empty($memberId)) return [];
         $cacheKey = self::INFO_CACHE_KEY.$memberId;
-        $info = redis()->get($cacheKey);
+        // $info = redis()->get($cacheKey);
         if (empty($info)) {
             $info = $this->getInfo($memberId);
             redis()->set($cacheKey, $info, self::INFO_CACHE_EXPIRETIME);
@@ -55,7 +55,7 @@ class MemberService extends BaseService
     public function getInfo($memberId)
     {
         if (empty($memberId)) return [];
-        $info = $this->loadData($memberId);
+        $info = $this->loadData($memberId, ['mem_id', 'nickname', 'avatar', 'sex']);
         $info['avatar'] = !empty($info['avatar']) ? url('upload'.DS.$info['avatar']) : $this->getDefaultAvatar($memberId);
         return $info;
     }
@@ -74,6 +74,11 @@ class MemberService extends BaseService
     public function isExist($memberId)
     {
         return $this->baseModel->isExist($memberId);
+    }
+
+    public function isExistCode($code)
+    {
+        return $this->baseModel->isExistCode($code);
     }
 
     public function login($memberId, $type=0)

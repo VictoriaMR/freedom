@@ -8,6 +8,7 @@ class VerifyToken
         'Home/Index/index',
         'Home/Index/checktoken',
         'Home/Chat/index',
+        'Home/Bindchat/index',
     ];
 
     public function handle($request)

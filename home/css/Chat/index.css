@@ -43,12 +43,12 @@
     z-index: 1;
 }
 .content {
-	height: calc(100vh - 0.56rem);
+	height: calc(100vh - 0.55rem);
 	overflow-y: auto;
     padding-top: 0.05rem;
 }
 .content-box {
-    max-width: calc(100% - 0.5rem - 0.1rem);
+    max-width: calc(100% - 0.8rem);
 }
 .content-box .name {
     overflow: hidden; 
@@ -100,3 +100,10 @@
 	width: calc(100% - 0.1rem - 0.3rem*2 - 0.48rem);
 }
 .color-red {color: #c00 !important;}
+.send-loading {
+    width: 0.16rem;
+    height: 0.16rem;
+    position: absolute;
+    left: -0.20rem;
+    top: calc(50% - 0.08rem);
+}

@@ -20,7 +20,9 @@ var CHAT = {
 	startContact: function()
 	{
 		if (!this.key) this.error();
-		var res = API.post(URI+'chat/create', {key: this.key});
+		var res = API.post(URI+'chat/getUserInfo', {});
+		this.user_info = res.data;
+		res = API.post(URI+'chat/create', {key: this.key});
 		if (res.code == 200) {
 			$('#content').html('<div class="content container bg-f"></div>\
 				<div class="footer bg-f8">\
@@ -45,7 +47,55 @@ var CHAT = {
 			$('#content .content').html(html);
 			this.toBottom();
 			this.scroller();
+			this.bindInit();
+			this.startConnect();
 		}
+	},
+	bindInit: function()
+	{
+		var _this = this;
+		$('#content').on('click', '.send-btn', function(){
+			var val = $(this).parents('.footer').find('input').val();
+			if (!val) {
+				$(this).parents('.footer').find('input').focus();
+				return false;
+			}
+			$(this).parents('.footer').find('input').val('');
+			_this.user_info['content'] = val;
+			var html = _this.sendMessage(_this.user_info, true);
+			html = $(html);
+			$('#content .content').append(html);
+			_this.toBottom();
+			var res = API.post(URI+'chat/send', {key: _this.key, content: val});
+			if (res.code == 200) {
+				html.find('.send-loading').remove();
+			} else {
+				html.find('.send-loading img').src(_this.data.send_err_img);
+			}
+		});
+	},
+	startConnect: function()
+	{
+		var _this = this;
+		ws = new WebSocket('ws://127.0.0.1:8282', [API.header('access_token')]);
+		ws.onopen = function(evt) { 
+		};
+
+		ws.onmessage = function(e){
+		    // json数据转换成js对象
+			var data = eval('(' +e.data + ')');
+		    var type = data.type || '';
+		    switch(type){
+		        case 'init':
+		            API.post(URI+'chat/bind', {client_id: data.client_id, key: _this.key});
+		            break;
+		        case 'message':
+		        	var html = _this.sendMessage(data);
+		        	$('#content .content').append(html);
+					_this.toBottom();
+		        	break;
+		    }
+		};
 	},
 	createHtml: function(data)
 	{
@@ -74,19 +124,24 @@ var CHAT = {
 		}
 		return html;
 	},
-	sendMessage: function(data)
+	sendMessage: function(data, loading)
 	{
-		return '<div class="row flex self">\
+		html = '<div class="row flex self">\
 		        	<div class="content-box">\
 				        <div class="name text-right '+(data.is_special ? 'color-red': '')+'">'+data.nickname+'</div>\
-				        <div class="bubble me">'+data.content+'</div>\
-		        	</div>\
+				        <div class="bubble me">'+data.content;
+				        if (loading) {
+				       		html += '<div class="send-loading loading"><img src="'+this.data.loading_img+'"></div>';
+				       	}
+				       	html += '</div>';
+		  html += '</div>\
 		        	<div class="table avatar">\
 			        	<div class="table-cell">\
 			        		<img src="'+data.avatar+'">\
 			        	</div>\
 		        	</div>\
-		        </div>';
+				</div>';
+		return html;
 	},
 	toBottom: function()
 	{
@@ -98,7 +153,6 @@ var CHAT = {
 		var _this = this;
 		var height = $('#content .content').prop('scrollHeight');
 		$('#content .content').on('scroll', function() {
-			console.log($('#content .content').scrollTop())
 			if (height - $('#content .content').scrollTop() > 100) {
 				_this.end_status = 0;
 			} else {

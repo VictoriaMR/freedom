@@ -14,10 +14,11 @@ class Base extends Query
         $this->_table = $this->table ?? null;
     }
 
-    public function loadData($id)
+    public function loadData($id, $field=[])
     {
         if (empty($id)) return [];
         return $this->where($this->primaryKey, (int) $id)
+                    ->select($field)
                     ->find();
     }
 

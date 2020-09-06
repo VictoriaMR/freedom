@@ -8,9 +8,9 @@ class Base
 
     protected static $constantMap = [];
 
-    public function loadData($id)
+    public function loadData($id, $field=[])
     {
-        return $this->baseModel->loadData($id);
+        return $this->baseModel->loadData($id, $field);
     }
 
     public function insertGetId($data)

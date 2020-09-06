@@ -2,7 +2,7 @@
 <div id='content'>
 	<div id="message">
 		<div class="middle">
-			<img class="loading" style="width: 0.68rem;height: 0.68rem;" src="<?php echo url('image/loading.png');?>">
+			<img class="loading" style="width: 0.50rem;height: 0.50rem;" src="<?php echo url('image/loading.png');?>">
 		</div>
 		<div class="text-center margin-top-10">
 			<span>加载中...</span>
@@ -13,6 +13,8 @@
 $(function(){
 	CHAT.init({
 		error_img: '<?php echo url('image/error.png');?>',
+		loading_img: '<?php echo url('image/loading.png');?>',
+		send_err_img: '<?php echo url('image/send_error.png');?>',
 	});
 });
 </script>

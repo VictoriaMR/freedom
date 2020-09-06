@@ -59,8 +59,10 @@ var API = {
 		});
 		return returnData;
 	},
-	header: function()
+	header: function(name)
 	{
+		if (name)
+			return localStorage.getItem(name);
 		var data = [];
 		var token = localStorage.getItem('access_token');
 		if (token)

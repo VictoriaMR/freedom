@@ -35,7 +35,7 @@ class MessageGroup extends BaseModel
 			'mem_id' => $memId,
 			'create_at' => $this->getTime(),
 		];
-		if (!empty($toUser)) {
+		if (!empty($toUser) && $memId != $toUser) {
 			$insert = [$insert];
 			$insert[] = [
 				'group_key' => $groupKey,
