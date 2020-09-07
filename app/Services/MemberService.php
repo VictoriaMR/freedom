@@ -168,6 +168,7 @@ class MemberService extends BaseService
     {
         echo __FUNCTION__.PHP_EOL;
         sleep(3);
+        echo __FUNCTION__.'sleep 3'.PHP_EOL;
     }
     public function test1()
     {
