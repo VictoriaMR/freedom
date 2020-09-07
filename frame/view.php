@@ -32,7 +32,13 @@ class View
             if (strpos($template, '.') !== false)
                 $template = 'view/'.strtr($template, '.', '/');
         } else {
-            $template = 'view/'.implode('/', array_filter(\frame\Router::$_route));
+            $info = array_filter(\frame\Router::$_route);
+            if (APP_TEMPLATE_TYPE) {
+                $prev = array_shift($info);
+                $template = 'view/'.$prev.'/'.(APP_TEMPLATE_TYPE ? (isMobile() ? 'mobile/' : 'computer/') : '').implode('/', $info);
+            } else {
+                $template = 'view/'.implode('/', $info);
+            }
         }
         return ROOT_PATH.$template.'.php';
     }
@@ -58,7 +64,7 @@ class View
     public static function load($template = '')
     {
         if (empty($template)) return false;
-        $template = self::getInstance()->getTemplate((APP_PATH ? APP_PATH.'.' : '').$template);
+        $template = self::getInstance()->getTemplate((APP_PATH ? APP_PATH.'.' : '').(APP_TEMPLATE_TYPE ? (isMobile() ? 'mobile.' : 'computer.') : '').$template);
         include($template);
     }
 }

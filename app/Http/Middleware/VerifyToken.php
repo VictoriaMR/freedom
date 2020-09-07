@@ -9,6 +9,7 @@ class VerifyToken
         'Home/Index/checktoken',
         'Home/Chat/index',
         'Home/Bindchat/index',
+        'Admin/Login/index',
     ];
 
     public function handle($request)
@@ -33,11 +34,11 @@ class VerifyToken
                 $headers = getallheaders();
                 $access_token = $headers['Access-Token'] ?? null;
                 if (empty($access_token))
-                    redirect(url(''));
+                    redirect(url('login'));
                 $memberService = make('App/Services/MemberService');
                 $res = $memberService->getToken($access_token);
                 if (!$res || $res['type'] != 5)
-                    redirect(url(''));
+                    redirect(url('login'));
                 $GLOBALS['login_member_id'] = $res['member_id'];
                 break;
         }

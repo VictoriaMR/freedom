@@ -7,7 +7,7 @@ class Hook
     private static $hook_list = [];
     private static $hooked = false;
 
-    public static function async($callback, $params) 
+    public static function async($callback, $params=[]) 
     {
         self::$hook_list[] = ['callback' => $callback, 'params' => $params];
         if(self::$hooked == false) {

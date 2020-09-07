@@ -8,4 +8,10 @@ require_once ROOT_PATH.'frame/app.php';
 require_once ROOT_PATH.'frame/container.php';
 require_once ROOT_PATH.'frame/env.php';
 // 执行应用
-App::run()->send();
+if (is_cli()) {
+	App::init();
+    //注册异常处理
+    \frame\Error::register();
+} else {
+	App::run()->send();
+}

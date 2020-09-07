@@ -17,8 +17,8 @@ class App
 		self::init();
         //注册异常处理
         \frame\Error::register();
+        \frame\Router::analyze();
 		//解析路由
-		\frame\Router::analyze();
 		return self::instance();
 	}
 
@@ -34,7 +34,10 @@ class App
         //公共样式
         if (!isAjax()) {
             \frame\Html::addJs(['jquery', 'common'], true);
-            \frame\Html::addCss(['common', 'iconfont'], true);
+            \frame\Html::addCss(['common'], true);
+            if ($info['class'] == 'Home') {
+                \frame\Html::addCss(['iconfont'], true);
+            }
         }
 
         if (is_callable([self::autoload($class), $info['func']])) {
@@ -45,7 +48,7 @@ class App
         }
     }
 
-	private static function init() 
+	public static function init() 
 	{
 		spl_autoload_register([__CLASS__ , 'autoload']);
 	}
@@ -85,5 +88,37 @@ class App
             \frame\Debug::debugInit();
         }
         exit();
+    }
+
+    public static function Error($msg = '')
+    {
+        $now         = date('Y-m-d H:i:s');
+        $destination = ROOT_PATH.'runtime/'.date('Ymd').'/error_log.log';
+
+        $path = dirname($destination);
+        !is_dir($path) && mkdir($path, 0755, true);
+
+        // 获取基本信息
+        if (isset($_SERVER['HTTP_HOST'])) {
+            $current_uri = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        } else {
+            $current_uri = "cmd:" . implode(' ', $_SERVER['argv']);
+        }
+
+        $runtime    = number_format(microtime(true) - APP_TIME_START, 10,'.','');
+        $reqs       = $runtime > 0 ? number_format(1 / $runtime, 2,'.','') : '∞';
+        $time_str   = ' [Time：' . number_format($runtime, 6) . 's][QPS：' . $reqs . 'req/s]';
+        $memory_use = number_format((memory_get_usage() - APP_MEMORY_START) / 1024, 2,'.','');
+        $memory_str = ' [MEM：' . $memory_use . 'kb]';
+        $file_load  = ' [Files：' . count(get_included_files()) . ']';
+        $info   = '[ log ] ' . $current_uri . $time_str . $memory_str . $file_load . "\r\n";
+        $server = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : '0.0.0.0';
+        $remote = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0';
+        $method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'CLI';
+        $message = error_get_last()['message'] ?? '';
+        if (empty($message)) $message = $msg;
+
+        return error_log("[{$now}] {$server} {$remote} {$method} {$current_uri}\r\n{$info}{$message}\r\n---------------------------------------------------------------\r\n",
+                3, $destination);
     }
 }

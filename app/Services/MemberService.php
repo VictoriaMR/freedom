@@ -163,4 +163,21 @@ class MemberService extends BaseService
     {
         return in_array($memberId, self::SPECIAL_MEMBER);
     }
+
+    public function test()
+    {
+        echo __FUNCTION__.PHP_EOL;
+        sleep(3);
+    }
+    public function test1()
+    {
+        echo __FUNCTION__.PHP_EOL;
+        sleep(1);
+    }
+    public function test2()
+    {
+        echo __FUNCTION__.PHP_EOL;
+        sleep(1);
+        echo 'end';
+    }
 }

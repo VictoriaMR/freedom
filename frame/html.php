@@ -11,7 +11,11 @@ class Html
 	{
 		if (!is_array($name)) $name = [$name];
 		foreach ($name as $value) {
-			self::$_CSS[] = env('APP_DOMAIN') . 'css/' . ($public ? '' : \frame\Router::$_route['path'].'/') . $value . '.css';
+			if ($public) {
+				self::$_CSS[] = env('APP_DOMAIN') . 'css/'.(APP_TEMPLATE_TYPE ? (isMobile() ? 'mobile/' : 'computer/') : '').$value.'.css';
+			} else {
+				self::$_CSS[] = env('APP_DOMAIN') . 'css/'.(APP_TEMPLATE_TYPE ? (isMobile() ? 'mobile/' : 'computer/') : '').strtolower(\frame\Router::$_route['path']).'/'.$value . '.css';
+			}
 		}
 	}
 
@@ -20,7 +24,11 @@ class Html
 		if (empty($name)) return false;
 		if (!is_array($name)) $name = [$name];
 		foreach ($name as $value) {
-			self::$_JS[] = env('APP_DOMAIN') . 'js/' . ($public ? '' : \frame\Router::$_route['path'].'/') . $value . '.js';
+			if ($value == 'jquery' || ($public && $value == 'common')) {
+				self::$_JS[] = env('APP_DOMAIN') . 'js/'.($public ? '' : strtolower(\frame\Router::$_route['path']).'/') . $value . '.js';
+			} else {
+				self::$_JS[] = env('APP_DOMAIN') . 'js/'.(APP_TEMPLATE_TYPE ? (isMobile() ? 'mobile/' : 'computer/') : ''). ($public ? '' : strtolower(\frame\Router::$_route['path']).'/') . $value . '.js';
+			}
 		}
 		return true;
 	}

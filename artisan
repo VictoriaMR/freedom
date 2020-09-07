@@ -1,14 +1,18 @@
 #! /usr/bin/env php
 <?php 
 
+define('APP_MEMORY_START', memory_get_usage());
+define('APP_TIME_START', microtime(true));
 define('APP_START_TIME', microtime(true));
 
 //定义项目根目录
-define('ROOT_PATH', str_replace('\\', '/', realpath(dirname(__FILE__).'/../').'/'));
+define('ROOT_PATH', strtr(dirname(__FILE__), '\\', '/').'/');
 
 //加载 框架 执行文件
 require_once ROOT_PATH.'frame/start.php';
 
-$kernal = App::make('App/Console/Kernal');
+$kernal = make('App/Console/Kernal');
+
+$kernal->run();
 
 exit();

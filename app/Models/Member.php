@@ -17,7 +17,7 @@ class Member extends BaseModel
     	$this->begin(); //事务开启
     	$openid = $data['openid'] ?? '';
     	unset($data['openid']);
-    	$data['recommend_code'] = $this->getCode();
+    	$data['code'] = $this->getCode();
     	$memberId = $this->insertGetId($data);
     	//绑定关系
     	$relation->addNotExist($openid, $memberId, $type);

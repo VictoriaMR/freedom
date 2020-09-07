@@ -28,8 +28,12 @@ class Router
 	        // 中间路径
 	        $funcArr['func'] = $pathInfoArr;
 		}
+		$defaultClass = '';
+		if(defined('APP_PATH'))
+			$defaultClass = APP_PATH;
+
         $funcArr = [
-			'class' => $funcArr['class'] ? $funcArr['class'] : (APP_PATH ?? ''),
+			'class' => $funcArr['class'] ? $funcArr['class'] : $defaultClass,
 			'path' => $funcArr['path'] ? $funcArr['path'] : 'Index',
 			'func' => $funcArr['func'] ? $funcArr['func'] : 'index',
 		];
