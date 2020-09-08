@@ -2,6 +2,7 @@
 <?php 
 
 define('APP_MEMORY_START', memory_get_usage());
+ini_set('date.timezone', 'Asia/Shanghai');
 define('APP_TIME_START', microtime(true));
 define('APP_START_TIME', microtime(true));
 
