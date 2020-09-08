@@ -23,7 +23,7 @@ class Error
     {
     	$msg = sprintf('<div>[%s]</div> <div> %s </div> <div> 第 %s 行 </div> <div> 错误: %s </div><br />', date( "Y-m-d H:i:s" ), $errfile, $errline, $errStr);
     	self::$_error[] = $msg;
-    	\App::Error(str_replace(['<div>', '</div>', 'br/'], ['', '', '\r\n'], $msg));
+    	\App::Log(str_replace(['<div>', '</div>', '<br />'], ['', '', '\r\n'], $msg));
     	self::error_echo();
     }
 
@@ -34,7 +34,7 @@ class Error
     		$msg .= '<div>'.sprintf(' %s, 第 %s 行', $value['file'] ?? '', $value['line'] ?? '').'</div>';
     	}
     	self::$_error[] = $msg;
-    	\App::Error(str_replace(['<div>', '</div>', 'br/'], ['', '', '\r\n'], $msg));
+    	\App::Log(str_replace(['<div>', '</div>', '<br />'], ['', '', '\r\n'], $msg));
 		self::error_echo();
     }
 
@@ -65,7 +65,7 @@ class Error
 			$msg .= '文件: <strong>'.$_error['file'].'</strong></br>';
 			$msg .= '在第: <strong>'.$_error['line'].'</strong> 行</br>';
 			self::$_error[] = $msg;
-			\App::Error();
+			\App::Log();
 			self::error_echo();
 		}
 	}
@@ -79,7 +79,7 @@ class Error
 		$err = error_get_last();
 		if ($err)
 		{
-			\App::Error();
+			\App::Log();
 			if ($err['type'] == 1) {
 				echo '<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" /><style>*{padding:0;margin:0;}img{max-width:100%;max-height:100%;}</style><div style="width: 100%;text-align:center;padding-top:200px;"><a href="'.url('').'"><img src="'.siteUrl('image/computer/404.jpg').'"/></a></div>';
 			}

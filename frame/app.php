@@ -84,16 +84,15 @@ class App
     protected function end()
     {   
         // 应用调试模式
-        if (env('APP_DEBUG')) {
+        if (env('APP_DEBUG'))
             \frame\Debug::debugInit();
-        }
         exit();
     }
 
-    public static function Error($msg = '')
+    public static function Log($msg = '')
     {
         $now         = date('Y-m-d H:i:s');
-        $destination = ROOT_PATH.'runtime/'.date('Ymd').'/error_log.log';
+        $destination = ROOT_PATH.'runtime/'.date('Ymd').'/runlog.log';
 
         $path = dirname($destination);
         !is_dir($path) && mkdir($path, 0755, true);
@@ -116,9 +115,21 @@ class App
         $remote = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0';
         $method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'CLI';
         $message = error_get_last()['message'] ?? '';
-        if (empty($message)) $message = $msg;
+        if (empty($message)) $message = preg_replace('/\s(?=\s)/', '\\1', $msg);
 
-        return error_log("[{$now}] {$server} {$remote} {$method} {$current_uri}\r\n{$info}{$message}\r\n---------------------------------------------------------------\r\n",
+        $message = rtrim($message, PHP_EOL);
+
+        return error_log("\r\n[{$now}] {$server} {$remote} {$method} {$current_uri}\r\n{$info}{$message}---------------------------------------------------------------\r\n",
                 3, $destination);
+    }
+
+    public static function Debug($msg)
+    {
+        $destination = ROOT_PATH.'runtime/'.date('Ymd').'/runlog.log';
+
+        $path = dirname($destination);
+        !is_dir($path) && mkdir($path, 0755, true);
+
+        return error_log("\r\nDebug: {$msg}\r\n", 3, $destination);
     }
 }

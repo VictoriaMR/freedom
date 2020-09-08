@@ -166,19 +166,7 @@ class MemberService extends BaseService
 
     public function test()
     {
-        echo __FUNCTION__.PHP_EOL;
-        sleep(3);
-        echo __FUNCTION__.'sleep 3'.PHP_EOL;
-    }
-    public function test1()
-    {
-        echo __FUNCTION__.PHP_EOL;
-        sleep(1);
-    }
-    public function test2()
-    {
-        echo __FUNCTION__.PHP_EOL;
-        sleep(1);
-        echo 'end';
+        $model = make('App/Models/MessageMember');
+        $model->where('item_id', 1)->increment('unread');
     }
 }
