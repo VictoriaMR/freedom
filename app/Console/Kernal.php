@@ -6,7 +6,7 @@ class Kernal
 {
     const COMMON_LIST = [
         ['App/Services/MemberService', 'test', '1'],
-        ['App/Services/MemberService', 'test2', '1'],
+        ['App/Services/MemberService', 'test2', '5'],
     ];
     private $common = null;
 
@@ -43,7 +43,7 @@ class Kernal
         if (substr(php_uname(), 0, 7) == 'Windows') {
             pclose(popen('start /B '.$cmd, 'r')); 
         } else {
-            exec($cmd . ' > /dev/null &');
+            exec($cmd . ' >> /tmp/out.log 2>&1');
         }
     }
 
