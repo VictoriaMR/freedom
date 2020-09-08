@@ -25,8 +25,10 @@ class SystemService extends BaseService
 
     public function sysLinux()
     {
-    	// CPU
-    	if (false === ($str = @baifile('/proc/cpuinfo'))) return false;
+    	if (!is_file('/proc/cpuinfo')) return false;
+    	$fp = fopen('/proc/cpuinfo', 'r');
+		$str = fread($fp, filesize('/proc/cpuinfo'));
+		fclose($fp);
 	    $str = implode('',  $str);
 	    @preg_match_all('/model\s+name\s{0,}\:+\s{0,}([\w\s\)\(\@.-]+)([\r\n]+)/s', $str, $model);
 		@preg_match_all('/cpu\s+MHz\s{0,}\:+\s{0,}([\d\.]+)[\r\n]+/', $str, $mhz);
