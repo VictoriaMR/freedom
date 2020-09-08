@@ -53,6 +53,10 @@ class Error
 	{
 		$_error = error_get_last();
 		if ($_error && in_array($_error['type'], array(1, 4, 16, 64, 256, 4096, E_ALL))) {
+			\App::Log();
+			if (is_cli()) {
+				exit();
+			}
 			$route = Router::getFunc();
 			$msg = '';
 			$msg .= '<div>网址:'.$_SERVER['REDIRECT_URL'].'</div>';

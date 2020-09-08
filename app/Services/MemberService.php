@@ -168,5 +168,15 @@ class MemberService extends BaseService
     {
         $model = make('App/Models/MessageMember');
         $model->where('item_id', 1)->increment('unread');
+        return true;
+    }
+
+    public function test2()
+    {
+        $memberId = rand(1, 10000);
+        $messageService = make('App/Services/MessageService');
+        $key = $messageService->createGroup($memberId);
+        \App::log($key);
+        return $key;
     }
 }

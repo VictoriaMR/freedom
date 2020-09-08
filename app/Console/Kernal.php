@@ -6,6 +6,7 @@ class Kernal
 {
     const COMMON_LIST = [
         ['App/Services/MemberService', 'test', '1'],
+        ['App/Services/MemberService', 'test2', '1'],
     ];
     private $common = null;
 

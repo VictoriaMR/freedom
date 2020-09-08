@@ -119,17 +119,6 @@ class App
 
         $message = rtrim($message, PHP_EOL);
 
-        return error_log("\r\n[{$now}] {$server} {$remote} {$method} {$current_uri}\r\n{$info}{$message}---------------------------------------------------------------\r\n",
-                3, $destination);
-    }
-
-    public static function Debug($msg)
-    {
-        $destination = ROOT_PATH.'runtime/'.date('Ymd').'/runlog.log';
-
-        $path = dirname($destination);
-        !is_dir($path) && mkdir($path, 0755, true);
-
-        return error_log("\r\nDebug: {$msg}\r\n", 3, $destination);
+        return error_log("\r\n[{$now}] {$server} {$remote} {$method} {$current_uri}\r\n{$info}{$message}---------------------------------------------------------------", 3, $destination);
     }
 }
