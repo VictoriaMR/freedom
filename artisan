@@ -1,4 +1,4 @@
-#! /usr/bin/env /usr/local/php/bin/php
+#!/usr/bin/env php
 <?php 
 
 define('APP_MEMORY_START', memory_get_usage());
