@@ -27,34 +27,24 @@ class SystemService extends BaseService
     {
     	if (!is_file('/proc/cpuinfo')) return false;
     	$fp = fopen('/proc/cpuinfo', 'r');
-		$str = fread($fp, filesize('/proc/cpuinfo'));
+		$str = fread($fp, 9999);
 		fclose($fp);
-	    $str = implode('',  $str);
 	    @preg_match_all('/model\s+name\s{0,}\:+\s{0,}([\w\s\)\(\@.-]+)([\r\n]+)/s', $str, $model);
 		@preg_match_all('/cpu\s+MHz\s{0,}\:+\s{0,}([\d\.]+)[\r\n]+/', $str, $mhz);
 		@preg_match_all('/cache\s+size\s{0,}\:+\s{0,}([\d\.]+\s{0,}[A-Z]+[\r\n]+)/', $str, $cache);
 		@preg_match_all('/bogomips\s{0,}\:+\s{0,}([\d\.]+)[\r\n]+/', $str, $bogomips);
-		if (false !== is_array($model[1])) {
+		if (is_array($model[1])) {
 			$res['cpu']['num'] = sizeof($model[1]);
 			$res['cpu']['num_text'] = str_replace(array(1, 2, 4, 8, 16), array('单', '双', '四', '八', '十六'), $res['cpu']['num']) . '核';
-			for ($i = 0; $i < $res['cpu']['num']; $i++) {
-				$res['cpu']['model'][] = $model[1][$i].'&nbsp;('.$mhz[1][$i].')';
-				$res['cpu']['mhz'][] = $mhz[1][$i];
-				$res['cpu']['cache'][] = $cache[1][$i];
-				$res['cpu']['bogomips'][] = $bogomips[1][$i];
-			}
 			$x1 = ($res['cpu']['num'] == 1) ? '' : ' ×' . $res['cpu']['num'];
 			$mhz[1][0] = ' | 频率:' . $mhz[1][0];
-			$cache[1][0] = ' | 二级缓存zhi:' . $cache[1][0];
-			$bogomips[1][0] = ' | Bogomips:' . $bogomips[1][0];
+			$cache[1][0] = ' | 二级缓存:' . $cache[1][0];
+			$bogomips[1][0] = ' | Bogomips(运算速度):' . $bogomips[1][0];
 			$res['cpu']['model'][] = $model[1][0] . $mhz[1][0] . $cache[1][0] . $bogomips[1][0] . $x1;
-			if (false !== is_array($res['cpu']['model'])) $res['cpu']['model'] = implode('<br />',  $res['cpu']['model']);
-			if (false !== is_array($res['cpu']['mhz'])) $res['cpu']['mhz'] = implode('<br />',  $res['cpu']['mhz']);
-			if (false !== is_array($res['cpu']['cache'])) $res['cpu']['cache'] = implode('<br />',  $res['cpu']['cache']);
-			if (false !== is_array($res['cpu']['bogomips'])) $res['cpu']['bogomips'] = implode('<br />',  $res['cpu']['bogomips']);
+			if (is_array($res['cpu']['model'])) $res['cpu']['model'] = implode('<br />',  $res['cpu']['model']);
 		}
 		if (false === ($str = @file('/proc/uptime'))) return false;
-		$str = explode(' ', implode('',  $str));
+		$str = explode(' ', implode(' ',  $str));
 		$str = trim($str[0]);
 		$min =  $str / 60;
 		$hours =  $min / 60;
@@ -62,7 +52,7 @@ class SystemService extends BaseService
 		$hours = floor($hours - ($days * 24));
 		$min = floor($min - ($days * 60 * 24) - ($hours * 60));
 		if ($days !== 0) $res['uptime'] =  $days . '天';
-		if ($hours !== 0) $res['uptime'] .=  $hours . '小时dao';
+		if ($hours !== 0) $res['uptime'] .=  $hours . '小时';
 		$res['uptime'] .=  $min . '分钟';
 		// MEMORY
 		if(false === ($str = @file('/proc/meminfo'))) return false;
