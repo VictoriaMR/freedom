@@ -31,7 +31,7 @@ class Kernal
             $temp = explode(':', $value[2]);
             $temp = array_merge(array_fill(0, 4 - count($temp), 0), $temp);
             if ($this->matchTime(array_combine($data, $temp), $date)) {
-                $cmd = 'nohup php '.ROOT_PATH.'artisan '.$value[0].' '.$value[1];
+                $cmd = 'php '.ROOT_PATH.'artisan '.$value[0].' '.$value[1];
                 $this->execCommand($cmd);
             }
         }
@@ -41,7 +41,7 @@ class Kernal
     public function execCommand($cmd)
     {
         if (substr(php_uname(), 0, 7) == 'Windows') {
-            pclose(popen('start /B '. ltrim($cmd, 'nohup'), 'r')); 
+            pclose(popen('start /B '. $cmd, 'r')); 
         } else {
             exec($cmd . ' > /dev/null &');
         }
