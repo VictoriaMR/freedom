@@ -110,6 +110,7 @@ class App
         $memory_use = number_format((memory_get_usage() - APP_MEMORY_START) / 1024, 2,'.','');
         $memory_str = ' [MEM：' . $memory_use . 'kb]';
         $file_load  = ' [Files：' . count(get_included_files()) . ']';
+        $file_load  .= impolde(PHP_EOL, get_included_files());
         $info   = '[ log ] ' . $current_uri . $time_str . $memory_str . $file_load . "\r\n";
         $server = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : '0.0.0.0';
         $remote = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0';
