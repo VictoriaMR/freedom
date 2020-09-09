@@ -13,7 +13,6 @@ define('ROOT_PATH', strtr(dirname(__FILE__), '\\', '/').'/');
 require_once ROOT_PATH.'frame/start.php';
 
 $kernal = make('App/Console/Kernal');
-
 $kernal->run();
 
 exit();

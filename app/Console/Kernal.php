@@ -8,63 +8,35 @@ class Kernal
         ['App/Services/MemberService', 'test', '1'],
         ['App/Services/MemberService', 'test2', '5'],
     ];
-    private $common = null;
 
     public function run()
     {
         if (empty(self::COMMON_LIST)) return false;
 
-        $argv = $_SERVER['argv'];
-        array_shift($argv);
-        if (!empty($argv)) {
-            if (env('APP_DEBUG'))
-                \App::Log();
-            call_user_func_array([make($argv[0]), $argv[1]], []);
+        if (!empty($_SERVER['argv'][1])) {
+            call_user_func_array([make($_SERVER['argv'][1]), $_SERVER['argv'][2]], []);
             exit();
         }
-
-        $date = strtr(date('m-d H:i'), ['-'=>' ', ':' => ' ']);
-        $data = ['month', 'day', 'hour', 'minute'];
-        $date = array_combine($data, explode(' ', $date));
-        foreach (self::COMMON_LIST as $key => $value) {
-            if (empty($value[2])) continue;
-            $temp = explode(':', $value[2]);
-            $temp = array_merge(array_fill(0, 4 - count($temp), 0), $temp);
-            if ($this->matchTime(array_combine($data, $temp), $date)) {
-                $cmd = 'php '.ROOT_PATH.'artisan '.$value[0].' '.$value[1];
-                $this->execCommand($cmd);
+        $minute = date('i', time());
+        foreach (self::COMMON_LIST as $value) {
+            if ($this->matchTime($minute, $value[2])) {
+                $this->execCommand('php '.ROOT_PATH.'artisan '.$value[0].' '.$value[1]);
             }
         }
         return true;
     }
 
-    public function execCommand($cmd)
+    private function execCommand($cmd)
     {
-        if (substr(php_uname(), 0, 7) == 'Windows') {
-            pclose(popen('start /B '.$cmd, 'r')); 
-        } else {
+        if (strpos(php_uname(), 'Windows') === false) {
             exec($cmd . ' >> /tmp/out.log 2>&1');
+        } else {
+            pclose(popen('start /B '.$cmd, 'r')); 
         }
     }
 
-    public function matchTime($setTime, $nowTime)
+    private function matchTime($setTime, $nowTime)
     {
-        if (empty($setTime) || empty($nowTime)) return false;
-        if (!empty($setTime['minute']) && count(array_filter($setTime)) == 1) {
-            $check = 0;
-            foreach ($setTime as $key => $value) {
-                if ($value == 0 || $nowTime[$key] % $value == 0) {
-                    $check ++;
-                }
-            }
-        } else {
-            $check = 0;
-            foreach ($setTime as $key => $value) {
-                if ($value == $nowTime[$key]) {
-                    $check ++;
-                }
-            }
-        }
-        return $check == count($setTime);
+        return $nowTime % $setTime == 0;
     }
 }
