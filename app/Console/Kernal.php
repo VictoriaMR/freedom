@@ -35,7 +35,7 @@ class Kernal
         }
     }
 
-    private function matchTime($setTime, $nowTime)
+    private function matchTime($nowTime, $setTime)
     {
         return $nowTime % $setTime == 0;
     }
