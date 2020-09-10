@@ -30,16 +30,16 @@ class App
         //中间组件
         $handle = make('App\Http\Middleware\VerifyToken');
         $handle = $handle->handle($info);
-
         //公共样式
         if (!isAjax()) {
             \frame\Html::addJs(['jquery', 'common'], true);
             \frame\Html::addCss(['common'], true);
             if ($info['class'] == 'Home') {
                 \frame\Html::addCss(['iconfont'], true);
+            } else {
+                \frame\Html::addCss(['layer', 'font', 'space'], true);
             }
         }
-
         if (is_callable([self::autoload($class), $info['func']])) {
             call_user_func_array([self::autoload($class), $info['func']], []);
             $this->end();

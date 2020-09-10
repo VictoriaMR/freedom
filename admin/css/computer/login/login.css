@@ -1,0 +1,8 @@
+#login-bg{position:fixed;height:100%;width:100%;background:#444;opacity:.8}
+.login-box{width:350px;height:350px;padding:40px 50px;color:#6c6c6c;background:#fff;position:fixed;top:calc(50% - 201px);right:calc(50% - 201px);box-shadow:4px 4px 10px #333;border:1px solid #ccc;background-color: #fff;border-radius: 4px}
+.login-box form{padding-top:70px}
+.login-box a{width:65px;float:left;height:28px;text-align:center;margin-right:18px;color:#333}
+.login-box a.select{border-bottom:2px solid #000}
+.poptip-content{color:#ff9000;border:1px solid #f3d995;padding:5px 10px;width:90px;text-align:center;background:#fefcee;position:absolute;right:50px;top:4px}
+.poptip-content:after{content:'';position:absolute;top:9px;right:-6px;width:9px;height:9px;border-top:1px solid #f3d995;border-right:1px solid #f3d995;transform:rotate(45deg);background:#fefcee}
+#login-error{border:1px solid #ff934c;border-color:#ffb4a8;background-color:#fef2f2;height:28px;line-height:28px;padding:0 8px;position:absolute;width:calc(100% - 18px);top:20px}

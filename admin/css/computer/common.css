@@ -1,0 +1,17 @@
+*{margin:0;outline:0 none;padding:0}
+body,button,input,select,textarea{font:12px/1.5 Microsoft YaHei,tahoma,arial,Hiragino Sans GB,\\5B8B\4F53,sans-serif;color:#3c3c3c}
+ul,ol{list-style:none}
+a{text-decoration:none;color:#3c3c3c}
+a:hover{text-decoration:none}
+img{border:0;max-width:100%;max-height:100%}
+table{border-collapse:collapse;border-spacing:0}
+.input{height:40px;width:calc(100% - 22px);border:1px solid #f1eeee;padding:0 10px;font-size:14px;border-radius:4px}
+.relative{position:relative}
+.input:focus{outline:0}
+.left{float:left}
+.right{float:right}
+.pointer{cursor:pointer}
+.text-center{text-align:center}
+.text-right{text-align:right}
+.width-50{width:50%}
+.width-100{width:100%}
