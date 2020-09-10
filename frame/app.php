@@ -38,6 +38,7 @@ class App
                 \frame\Html::addCss(['iconfont'], true);
             } else {
                 \frame\Html::addCss(['layer', 'font', 'space'], true);
+                \frame\Html::addJs(['button'], true);
             }
         }
         if (is_callable([self::autoload($class), $info['func']])) {

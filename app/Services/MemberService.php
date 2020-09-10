@@ -44,7 +44,7 @@ class MemberService extends BaseService
     {
         if (empty($memberId)) return [];
         $cacheKey = self::INFO_CACHE_KEY.$memberId;
-        // $info = redis()->get($cacheKey);
+        $info = redis()->get($cacheKey);
         if (empty($info)) {
             $info = $this->getInfo($memberId);
             redis()->set($cacheKey, $info, self::INFO_CACHE_EXPIRETIME);
@@ -81,12 +81,71 @@ class MemberService extends BaseService
         return $this->baseModel->isExistCode($code);
     }
 
-    public function login($memberId, $type=0)
+    public function login($memberId, $type=1)
     {
         if (empty($memberId)) return false;
-        if (!$this->isExist($memberId)) return false;
 
-        return $this->generateToken($memberId, $type);
+        $info = $this->loadData($memberId);
+        if (empty($info)) return false;
+        $key = $this->getTypeText($type);
+        $data = [
+            'member_id' => $info['mem_id'],
+            'name' => $info['name'],
+            'nickname' => $info['nickname'],
+            'sex' => $info['sex'],
+            'avatar' => $info['avatar'],
+            'mobile' => $info['mobile'],
+        ];
+        \frame\Session::set($key, $data);
+        return true;
+    }
+
+    public function getPasswd($password, $salt)
+    {
+        $passwordArr = str_split($password);
+        $saltArr = str_split($salt);
+        $countpwd = count($passwordArr);
+        $countSalt = count($saltArr);
+        $password = '';
+        if ($countSalt > $countpwd) {
+            foreach ($saltArr as $key => $value) {
+                $password .= $passwordArr[$key] ?? '' . $value;
+            }
+        } else {
+            $i = 0;
+            $sign = floor($countpwd / $countSalt);
+            foreach ($passwordArr as $key => $value) {
+                $password .= $value;
+                if ($key % $sign == 0) {
+                    if (empty($saltArr[$i])) $i = 0;
+
+                    $password .= $saltArr[$i];
+                    $i ++;
+                }
+            }
+        }
+        return $password;
+    }
+
+    public function getInfoByPhone($phone)
+    {
+        return $this->baseModel->where('mobile', $phone)->find();
+    }
+
+    public function checkPassword($inPassword = '', $sourcePassword = '')
+    {
+        return password_verify($inPassword, $sourcePassword);
+    }
+
+    protected function getTypeText($type)
+    {
+        $data = [
+            '0' => 'guest',
+            '1' => 'home',
+            '3' => 'customer',
+            '5' => 'admin',
+        ];
+        return $data[$type] ?? '';
     }
 
     protected function generateToken($memberId, $type)
@@ -162,22 +221,5 @@ class MemberService extends BaseService
     public function specialMember($memberId)
     {
         return in_array($memberId, self::SPECIAL_MEMBER);
-    }
-
-    public function test()
-    {
-        $model = make('App/Models/MessageMember');
-        $model->where('item_id', 1)->increment('unread');
-        \App::log();
-        return true;
-    }
-
-    public function test2()
-    {
-        $memberId = rand(1, 10000);
-        $messageService = make('App/Services/MessageService');
-        $key = $messageService->createGroup($memberId);
-        \App::log();
-        return true;
     }
 }

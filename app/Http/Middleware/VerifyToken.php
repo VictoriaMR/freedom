@@ -10,6 +10,7 @@ class VerifyToken
         'Home/Chat/index',
         'Home/Bindchat/index',
         'Admin/Login/index',
+        'Admin/Login/login',
     ];
 
     public function handle($request)
@@ -20,26 +21,12 @@ class VerifyToken
         //检查登录状态
         switch ($request['class']) {
             case 'Home':
-                $headers = getallheaders();
-                $access_token = $headers['Access-Token'] ?? null;
-                if (empty($access_token))
-                    redirect(url(''));
-                $memberService = make('App/Services/MemberService');
-                $res = $memberService->getToken($access_token);
-                if (!$res || $res['type'] != 1)
-                    redirect(url(''));
-                $GLOBALS['login_member_id'] = $res['member_id'];
+                if (empty(\frame\Session::get('home_member_id')))
+                    redirect(url('login'));
                 break;
             case 'Admin':
-                $headers = getallheaders();
-                $access_token = $headers['Access-Token'] ?? null;
-                if (empty($access_token))
+                if (empty(\frame\Session::get('admin_member_id')))
                     redirect(url('login'));
-                $memberService = make('App/Services/MemberService');
-                $res = $memberService->getToken($access_token);
-                if (!$res || $res['type'] != 5)
-                    redirect(url('login'));
-                $GLOBALS['login_member_id'] = $res['member_id'];
                 break;
         }
     }

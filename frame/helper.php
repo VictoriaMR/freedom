@@ -100,12 +100,7 @@ function url($url = '', $param = [])
 }
 function redirect($url)
 {
-    if (isAjax()) {
-        header('Content-Type:application/json; charset=utf-8');
-        echo json_encode(['code'=>201, 'data'=>false, 'message'=>'login is expired'], JSON_UNESCAPED_UNICODE);
-    } else {
-        header('Location:'.$url);
-    }
+    header('Location:'.$url);
     exit();
 }
 function is_cli()
