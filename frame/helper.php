@@ -107,3 +107,7 @@ function is_cli()
 {
     return preg_match('/cli/i', php_sapi_name()) ? true : false;
 }
+function load($name)
+{
+    return \frame\View::load($name);
+}

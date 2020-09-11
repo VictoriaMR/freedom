@@ -18,3 +18,6 @@
 <script type="text/javascript">
 var URI = "<?php echo Env('APP_DOMAIN');?>";
 </script>
+<?php if (!empty(\frame\Session::get('admin_member_id')))
+    load('Common.baseLeft');
+?>
