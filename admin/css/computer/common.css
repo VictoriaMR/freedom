@@ -33,6 +33,15 @@ body {
 ::-webkit-scrollbar-thumb:horizontal:hover{background-color:#3B3B3B}
 ::-webkit-scrollbar-corner:horizontal{background-color:#535353}
 ::-webkit-scrollbar-resizer:horizontal{background-color:#FF6E00}
+.ellipsis-1 {
+    overflow: hidden;
+    white-space: normal;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical
+}
 .table-border-bottom {border-bottom: solid 1px #dedede;}
 .input{height:40px;width:calc(100% - 22px);border:1px solid #f1eeee;padding:0 10px;font-size:14px;border-radius:4px}
 .relative{position:relative}
@@ -84,6 +93,10 @@ body {
 
 .switch_status.off {
     left: -36px;
+}
+#content{
+    height: 100vh;
+    overflow: hidden;
 }
 #header-nav .nav {
     border-left-width: 2px;

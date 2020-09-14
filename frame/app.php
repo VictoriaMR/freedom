@@ -38,7 +38,7 @@ class App
                 \frame\Html::addCss(['iconfont'], true);
             } else {
                 \frame\Html::addCss(['layer', 'font', 'space', 'bootstrap', 'datepicker'], true);
-                \frame\Html::addJs(['button', 'common'], true);
+                \frame\Html::addJs(['common', 'button', 'modal'], true);
             }
         }
         if (is_callable([self::autoload($class), $info['func']])) {

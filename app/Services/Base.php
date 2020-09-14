@@ -23,6 +23,11 @@ class Base
         return $this->baseModel->updateDataById($id, $data);
     }
 
+    public function deleteById($id)
+    {
+        return $this->baseModel->deleteById($id);
+    }
+
     public function getBaseModel()
     {
         return $this->baseModel;

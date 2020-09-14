@@ -2,6 +2,7 @@ var FEATURE = {
 	init: function() 
 	{
 		var _this = this;
+		_this.sortInit();
 		$('#dealbox').offsetCenter();
 		$('.modify').on('click', function(event){
 			event.stopPropagation();
@@ -31,7 +32,7 @@ var FEATURE = {
 	    	var _thisobj = $(this);
 	    	var con_id = _thisobj.parents('tr').data('con_id');
 	    	var status = _thisobj.hasClass('on') ? 0 : 1;
-	    	API.post(URI + 'set/featureModify', {con_id: con_id, status: status }, function(res) {
+	    	API.post(URI + 'set/index', {con_id: con_id, status: status, opt: 'edit'}, function(res) {
     			if (res.code == 200) {
     				successTips(res.message);
     				switch_status(_thisobj, status);
@@ -58,7 +59,7 @@ var FEATURE = {
 	    	var _thisobj = $(this);
 	    	confirm('确定删除吗?', function(){
 	    		var con_id = _thisobj.parents('tr').data('con_id');
-	    		API.post(URI+'index/featureDelete', { con_id: con_id}, function(res) {
+	    		API.post(URI+'set/index', { con_id: con_id, opt: 'delete'}, function(res) {
 	    			if (res.code == 200) {
 	    				successTips(res.message);
 	    				window.location.reload();
@@ -80,24 +81,42 @@ var FEATURE = {
 	    $('.all-close').on('click', function(){
 	    	$('tr.son').hide();
 	    });
-	    $('tr.parent').on('click', function(){
-	    	if ($(this).next().hasClass('son')) {
-	    		if ($(this).next().is(':visible')) {
-	    			$(this).nextUntil('.parent').hide();
-	    		} else {
-	    			$(this).nextUntil('.parent').show();
-	    		}
+	    //排序
+	    $('.sort-btn .btn').on('click', function(){
+	    	var type = $(this).data('sort');
+	    	var className = $(this).attr('className');
+	    	if (type == 'down') {
+	    		$(this).parents('tr').nextUntil('.'+className).after($(this).parents('tr'));
 	    	}
+
+	    	_this.sortInit();
 	    });
+	},
+	sortInit:function()
+	{
+		$('.sort-btn .btn').attr('disabled', false);
+		$('tr.parent').eq(0).find('[data-sort="start"], [data-sort="up"]').attr('disabled', 'disabled');
+		$('tr.parent:last, tr:last').find('[data-sort="end"], [data-sort="down"]').attr('disabled', 'disabled');
+		$('tr.parent').each(function(){
+			if ($(this).prev().hasClass('son')) {
+				$(this).prev().find('[data-sort="end"], [data-sort="down"]').attr('disabled', 'disabled');
+			}
+
+			if ($(this).next().hasClass('son')) {
+				$(this).next().find('[data-sort="start"], [data-sort="up"]').attr('disabled', 'disabled');
+			}
+		})
 	},
 	initShow:function (data)
 	{	
 		$('#dealbox .form-control').each(function(){
 			var name = $(this).attr('name');
-			if (typeof data[name] == 'undefined') {
-				$('#dealbox [name="'+name+'"]').val('');
-			} else {
-				$('#dealbox [name="'+name+'"]').val(data[name]);
+			if (name != 'opt') {
+				if (typeof data[name] == 'undefined') {
+					$('#dealbox [name="'+name+'"]').val('');
+				} else {
+					$('#dealbox [name="'+name+'"]').val(data[name]);
+				}
 			}
 		});
 		if (typeof data.status != 'undefined') {
@@ -116,7 +135,7 @@ var FEATURE = {
 	},
 	save: function ()
 	{
-    	API.post(URI + 'set/featureModify', $('#dealbox form').serializeArray(), function(res){
+    	API.post(URI + 'set/index', $('#dealbox form').serializeArray(), function(res){
     		if (res.code == 200) {
     			successTips(res.message);
     			window.location.reload();

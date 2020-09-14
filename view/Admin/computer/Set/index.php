@@ -43,7 +43,7 @@
                     <?php } ?>
                 </td>
                 <td class="col-md-2 col-2">
-                    <div class="btn-group btn-group-sm">
+                    <div class="btn-group btn-group-sm sort-btn">
                         <button class="btn sort" data-sort="start" title="移到开头"><i class="glyphicon glyphicon-arrow-up"></i></button>
                         <button class="btn sort" data-sort="up" title="上移一位"><i class="glyphicon glyphicon-chevron-up"></i></button>
                         <button class="btn sort" data-sort="down" title="下移一位"><i class="glyphicon glyphicon-chevron-down"></i></button>
@@ -81,7 +81,7 @@
                     <?php }?>
                 </td>
                 <td class="col-md-2 col-2">
-                    <div class="btn-group btn-group-sm">
+                    <div class="btn-group btn-group-sm sort-btn">
                         <button class="btn sort" data-sort="start" title="移到开头"><i class="glyphicon glyphicon-arrow-up"></i></button>
                         <button class="btn sort" data-sort="up" title="上移一位"><i class="glyphicon glyphicon-chevron-up"></i></button>
                         <button class="btn sort" data-sort="down" title="下移一位"><i class="glyphicon glyphicon-chevron-down"></i></button>
@@ -106,6 +106,7 @@
 </div>
 <div id="dealbox" style="display: none;">
     <form class="form-horizontal">
+        <input type="hidden" class="form-control" name="opt" value="edit">
         <input type="hidden" class="form-control" name="con_id" value="0">
         <input type="hidden" class="form-control" name="parent_id" value="0">
         <button type="button" class="close" aria-hidden="true">&times;</button>

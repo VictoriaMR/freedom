@@ -1,6 +1,6 @@
 <?php $this->load('Common.baseHeader');?>
 <div id="content" class="flex">
-	<table width="100%" border="0">
+	<table width="100%" border="0" height="100%">
 		<tr>
 			<td width="180" height="100%" valign="top">
 				<div id="left">

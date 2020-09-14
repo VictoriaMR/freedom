@@ -69,7 +69,6 @@ class Error
 			$msg .= '文件: <strong>'.$_error['file'].'</strong></br>';
 			$msg .= '在第: <strong>'.$_error['line'].'</strong> 行</br>';
 			self::$_error[] = $msg;
-			\App::Log();
 			self::error_echo();
 		}
 	}

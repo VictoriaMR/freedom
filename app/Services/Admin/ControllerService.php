@@ -97,5 +97,13 @@ class ControllerService extends BaseService
         return $result;
     }
 
+    public function deleteByParentId($parentId)
+    {
+        return $this->baseModel->deleteByParentId($parentId);
+        $parentId = (int) $parentId;
+        if (empty($parentId)) return false;
 
+        return $this->baseModel->where('parent_id', $parentId)
+                               ->delete();
+    }
 }

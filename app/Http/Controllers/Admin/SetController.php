@@ -15,6 +15,16 @@ class SetController extends Controller
 
 	public function index()
 	{
+		$opt = ipost('opt');
+		switch ($opt) {
+			case 'edit':
+				$this->featureModify();
+				break;
+			case 'delete':
+				$this->featureDelete();
+				break;
+		}
+
 		Html::addCss(['index']);
 		Html::addJs(['index']);
 		$list = $this->baseService->getList();
@@ -36,7 +46,25 @@ class SetController extends Controller
 		return view();
 	}
 
-	public function featureModify()
+	protected function featureDelete()
+	{
+		$conId = (int) ipost('con_id');
+		if (empty($conId))
+			return $this->result(10000, false, ['message'=>'缺失ID']);
+
+		//先删除子类 再删除 主类
+		if ($this->baseService->isParent($conId))
+			$this->baseService->deleteByParentId($conId);
+
+		$result = $this->baseService->deleteById($conId);
+
+		if ($result)
+			return $this->result(200, $result, ['message' => '删除成功']);
+		else
+			return $this->result(10000, $result, ['message' => '删除失败']);
+	}
+
+	protected function featureModify()
 	{
 		$conId = (int) ipost('con_id');
 		$parentId = (int) ipost('parent_id', 0);

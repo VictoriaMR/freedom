@@ -48,7 +48,8 @@ var LOGIN = {
 				if (res.code == 200) {
 					window.location.href = URI;
 				} else {
-					$('#login-error').show().find('#login-error-msg').text(res.message);
+					$('#login-error-msg').text(res.message);
+					$('#login-error').show();
 				}
 				tempobj.button('reset');
 			});

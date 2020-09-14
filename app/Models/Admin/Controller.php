@@ -37,4 +37,12 @@ class Controller extends BaseModel
         return $this->where('parent_id', (int) $conId)
                     ->update($data);
     }
+
+    public function deleteByParentId($parentId)
+    {
+        $parentId = (int) $parentId;
+        if (empty($parentId)) return false;
+        return $this->where('parent_id', $parentId)
+                    ->delete();
+    }
 }

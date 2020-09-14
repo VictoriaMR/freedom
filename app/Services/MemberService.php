@@ -119,7 +119,7 @@ class MemberService extends BaseService
             'member_id' => $info['mem_id'],
             'name' => $info['name'],
             'nickname' => $info['nickname'],
-            'sex' => $info['sex'],
+            'sex' => $info['sex'] ?? 0,
             'avatar' => $info['avatar'],
             'mobile' => $info['mobile'],
         ];
@@ -159,7 +159,7 @@ class MemberService extends BaseService
         return $this->baseModel->where('mobile', $phone)->find();
     }
 
-    public function checkPassword($inPassword = '', $sourcePassword = '')
+    public function checkPassword($inPassword, $sourcePassword)
     {
         return password_verify($inPassword, $sourcePassword);
     }
