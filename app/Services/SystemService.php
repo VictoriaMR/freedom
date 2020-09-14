@@ -64,7 +64,7 @@ class SystemService extends BaseService
 		$res['mem_free'] = round($buf[2][0] / 1024, 2);
 		$res['mem_buffers'] = round($buffers[1][0] / 1024, 2);
 		$res['mem_cached'] = round($buf[3][0] / 1024, 2);
-		$res['mem_used'] =  $res['mem_total'] - $res['mem_free'];
+		$res['mem_used'] =  round($res['mem_total'] - $res['mem_free'], 2);
 		$res['mem_percent'] = (floatval($res['mem_total']) != 0) ? round($res['mem_used'] / $res['mem_total'] * 100, 2) : 0;
 		$res['mem_real_used'] = $res['mem_total'] -  $res['mem_free'] -  $res['mem_cached'] -  $res['mem_buffers'];
 		//真实内存使用
