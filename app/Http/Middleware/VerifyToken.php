@@ -25,8 +25,8 @@ class VerifyToken
                     redirect(url('login'));
                 break;
             case 'Admin':
-                // if (empty(\frame\Session::get('admin_member_id')))
-                    // redirect(url('login'));
+                if (empty(\frame\Session::get('admin_member_id')))
+                    redirect(url('login'));
                 break;
         }
     }

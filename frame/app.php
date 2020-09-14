@@ -32,13 +32,13 @@ class App
         $handle = $handle->handle($info);
         //公共样式
         if (!isAjax()) {
-            \frame\Html::addJs(['jquery', 'common'], true);
+            \frame\Html::addJs(['jquery'], true);
             \frame\Html::addCss(['common'], true);
             if ($info['class'] == 'Home') {
                 \frame\Html::addCss(['iconfont'], true);
             } else {
-                \frame\Html::addCss(['layer', 'font', 'space'], true);
-                \frame\Html::addJs(['button'], true);
+                \frame\Html::addCss(['layer', 'font', 'space', 'bootstrap', 'datepicker'], true);
+                \frame\Html::addJs(['button', 'common'], true);
             }
         }
         if (is_callable([self::autoload($class), $info['func']])) {

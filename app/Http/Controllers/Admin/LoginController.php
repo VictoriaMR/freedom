@@ -8,8 +8,8 @@ class LoginController extends Controller
 {
 	public function index()
 	{
-		Html::addCss('login');
-		Html::addJs('login');
+		Html::addCss(['login']);
+		Html::addJs(['login']);
 		$logincode = \frame\Str::random(6);
 		\frame\Session::set('admin_login_code', $logincode);
 		$this->assign('login_code', $logincode);
@@ -26,7 +26,6 @@ class LoginController extends Controller
 			$this->result(10000, false, '验证未通过');
 
 		$memberService = make('App/Services/Admin/MemberService');
-
 		$result = $memberService->loginByPassword($phone, $password);
 		if ($result)
 			$this->result(200, $result, '登录成功');
@@ -37,6 +36,6 @@ class LoginController extends Controller
 	public function logout()
 	{
 		\frame\Session::set('admin');
-		redirect('login');
+		redirect('/');
 	}
 }

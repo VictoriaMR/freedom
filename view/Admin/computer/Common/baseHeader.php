@@ -16,8 +16,29 @@
 </head>
 <body>
 <script type="text/javascript">
-var URI = "<?php echo Env('APP_DOMAIN');?>";
+var URI = "<?php echo APP_DOMAIN;?>";
 </script>
-<?php if (!empty(\frame\Session::get('admin_member_id')))
-    load('Common.baseLeft');
-?>
+<?php if (!empty($navArr)) { ?>
+<div id="header-nav" class="container-fluid margin-top-10">
+    <div class="nav" data-id="0"> 
+        <span class="left"><?php echo implode(' > ', $navArr);?></span>
+        <a title="新窗口中打开" class="extralink" target="_blank" href="">
+            <img src="<?php echo url('image/computer/icon/extralink.png');?>">
+        </a>
+        <a title="刷新当前页面" class="extralink" href="">
+            <img src="<?php echo url('image/computer/icon/refresh.png');?>">
+        </a>
+     </div>
+</div>
+<?php } ?>
+<?php if (!empty($tabs)) { ?>
+<div class="container-fluid" style="margin: 15px 0;">
+    <ul class="nav nav-tabs common-tabs">
+        <?php foreach ($tabs as $key => $val) {?>
+        <li <?php if ($val['name_en'] == $func){?>class="active"<?php } ?>>
+            <a href="<?php echo url($path.'/'.$key);?>"><?php echo $val['name'];?></a>
+        </li>
+        <?php } ?>
+    </ul>
+</div>
+<?php } ?>

@@ -64,6 +64,7 @@ class View
     public static function load($template = '')
     {
         if (empty($template)) return false;
+        extract(self::$data);
         $template = self::getInstance()->getTemplate((APP_PATH ? APP_PATH.'.' : '').(APP_TEMPLATE_TYPE ? (isMobile() ? 'mobile.' : 'computer.') : '').$template);
         include($template);
     }

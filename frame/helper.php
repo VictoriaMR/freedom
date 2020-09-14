@@ -91,7 +91,7 @@ function ifile($name = '', $default = null)
 function url($url = '', $param = [])
 {
     if (strpos($url, 'http') === false)
-        $url = Env('APP_DOMAIN').$url;
+        $url = APP_DOMAIN.$url;
     
     if (!empty($param)) {
         $url .= '?'. http_build_query($param);

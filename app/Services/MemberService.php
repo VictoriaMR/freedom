@@ -55,14 +55,41 @@ class MemberService extends BaseService
     public function getInfo($memberId)
     {
         if (empty($memberId)) return [];
-        $info = $this->loadData($memberId, ['mem_id', 'nickname', 'avatar', 'sex']);
-        $info['avatar'] = !empty($info['avatar']) ? url('upload'.DS.$info['avatar']) : $this->getDefaultAvatar($memberId);
+        $info = $this->loadData($memberId, ['mem_id', 'name', 'nickname', 'mobile', 'avatar', 'sex']);
+        $info['avatar'] = !empty($info['avatar']) ? url('upload'.DS.$info['avatar']) : $this->getDefaultAvatar($memberId, $info['sex']);
         return $info;
     }
 
-    public function getDefaultAvatar($memberId)
+    public function getDefaultAvatar($memberId, $sex=0)
     {
-        return '';
+        $type = substr($memberId, 0, 1);
+        switch ($type) {
+            case 1:
+                if ($sex)
+                    return url('image'.DS.'computer/male.jpg');
+                else
+                    return url('image'.DS.'computer/female.jpg');
+                break;
+            case 3:
+                if ($sex)
+                    return url('image'.DS.'computer/male.jpg');
+                else
+                    return url('image'.DS.'computer/female.jpg');
+                break;
+            case 5:
+                if ($sex)
+                    return url('image'.DS.'computer/male.jpg');
+                else
+                    return url('image'.DS.'computer/female.jpg');
+                break;
+            
+            default:
+                if ($sex)
+                    return url('image'.DS.'computer/male.jpg');
+                else
+                    return url('image'.DS.'computer/female.jpg');
+                break;
+        }
     }
 
     public function deleteCache($memberId)

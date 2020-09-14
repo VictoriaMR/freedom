@@ -1,9 +1,7 @@
 <?php
 //框架文件加载
-require_once ROOT_PATH.'frame/helper.php';
 require_once ROOT_PATH.'frame/app.php';
 require_once ROOT_PATH.'frame/container.php';
-require_once ROOT_PATH.'frame/env.php';
 // 执行应用
 if (is_cli()) {
 	App::init();

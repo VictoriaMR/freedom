@@ -30,4 +30,22 @@ class Controller
     {
         return \frame\View::getInstance()->assign($name, $value);
     }
+
+    protected function _initialize()
+    {
+        if (isAjax()) return false;
+
+        $info = \frame\Router::$_route;
+        $controllerService = \App::make('App\Services\Admin\ControllerService');
+        $data = $controllerService->getListByParentName($info['path']);
+        if (!empty($data['name'])) 
+            $navArr[] = $data['name'];
+        if (!empty($data['son'][$info['func']]))
+            $navArr[] = $data['son'][$info['func']]['name'];
+
+        $this->assign('navArr', $navArr ?? []);
+        $this->assign('path', $info['path'] ?? '');
+        $this->assign('func', $info['func'] ?? '');
+        $this->assign('tabs', $data['son'] ?? []);
+    }
 }
