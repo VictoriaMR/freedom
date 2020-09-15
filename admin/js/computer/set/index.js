@@ -101,7 +101,7 @@ var FEATURE = {
 		    		_thisobj.prev().before(_thisobj);
 		    	}
 		    	if (type == 'start') {
-		    		_thisobj.prevUntil('.parent').eq(0).before(_thisobj);
+		    		_thisobj.prevUntil('.parent').last().before(_thisobj);
 		    	}
 		    	if (type == 'end') {
 		    		_thisobj.nextUntil('.parent').last().after(_thisobj);

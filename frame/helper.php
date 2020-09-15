@@ -111,3 +111,7 @@ function load($name)
 {
     return \frame\View::load($name);
 }
+function paginator()
+{
+    return \frame\Paginator::getInstance();
+}

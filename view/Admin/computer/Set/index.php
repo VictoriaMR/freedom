@@ -113,11 +113,11 @@
         <h3 class="margin-bottom-14 font-600 font-16">新增功能</h3>
         <div class="input-group">
             <div class="input-group-addon"><span>系统功能名称：</span></div>
-            <input type="text" class="form-control" name="name" required="required" maxlength="30" value="">
+            <input type="text" class="form-control" name="name" required="required" maxlength="30" value="" autocomplete="off">
         </div>
         <div class="input-group">
             <div class="input-group-addon"><span>控制器名称：</span></div>
-            <input type="text" class="form-control" name="name_en" required="required" maxlength="30" value="">
+            <input type="text" class="form-control" name="name_en" required="required" maxlength="30" value="" autocomplete="off">
         </div>
         <div class="input-group">
             <div class="input-group-addon"><span>状态：</span></div>
@@ -143,7 +143,7 @@
         </div>
         <div class="input-group">
             <div class="input-group-addon"><span>排序：</span></div>
-            <input type="text" class="form-control" name="sort" maxlength="2" value="">
+            <input type="text" class="form-control" name="sort" maxlength="2" value="" autocomplete="off">
         </div>
         <button type="button" class="btn btn-primary btn-lg btn-block save" data-loading-text="loading..">确认</button>
     </form>

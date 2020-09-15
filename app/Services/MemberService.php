@@ -249,4 +249,17 @@ class MemberService extends BaseService
     {
         return in_array($memberId, self::SPECIAL_MEMBER);
     }
+
+    public function getTotal($where = [])
+    {
+        return $this->baseModel->where($where)->count();
+    }
+
+    public function getList($where = [], $page=1, $size=20, $orderby=[])
+    {
+        return $this->baseModel->where($where)
+                                ->page($page, $size)
+                                ->orderBy($orderby)
+                                ->get();
+    }
 }
