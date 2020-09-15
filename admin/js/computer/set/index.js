@@ -83,14 +83,105 @@ var FEATURE = {
 	    });
 	    //排序
 	    $('.sort-btn .btn').on('click', function(){
+	    	var _thisobj = $(this).parents('tr');
 	    	var type = $(this).data('sort');
-	    	var className = $(this).attr('className');
-	    	if (type == 'down') {
-	    		$(this).parents('tr').nextUntil('.'+className).after($(this).parents('tr'));
-	    	}
+	    	var className = _thisobj.attr('class');
+		    var idArr = [];
+	    	if (className == 'son') {
+	    		var parentObj = {};
+	    		if (_thisobj.prev().hasClass('parent'))
+	    			parentObj = _thisobj.prev();
+	    		else 
+	    			parentObj = _thisobj.prevUntil('.parent').last().prev();
 
+		    	if (type == 'down') {
+		    		_thisobj.next().after(_thisobj);
+		    	}
+		    	if (type == 'up') {
+		    		_thisobj.prev().before(_thisobj);
+		    	}
+		    	if (type == 'start') {
+		    		_thisobj.prevUntil('.parent').eq(0).before(_thisobj);
+		    	}
+		    	if (type == 'end') {
+		    		_thisobj.nextUntil('.parent').last().after(_thisobj);
+		    	}
+		    	//获取排序ID顺序
+		    	parentObj.nextUntil('.parent').each(function(){
+		    		var id = $(this).data('con_id');
+		    		idArr.push(id);
+		    	});
+	    	} else {
+	    		var obj = {};
+	    		if (type == 'down') {
+	    			if (_thisobj.next().hasClass('son')) {
+						obj = _thisobj.nextUntil('.parent').last().next();
+	    			} else {
+	    				obj = _thisobj.next();
+	    			}
+	    			if (obj.next().hasClass('son'))
+	    				obj = obj.nextUntil('.parent').last();
+
+	    			if (_thisobj.next().hasClass('son')) {
+	    				var temp = _thisobj.nextUntil('.parent');
+	    				obj.after(_thisobj);
+		    			_thisobj.after(temp);
+		    		} else {
+		    			obj.after(_thisobj);
+		    		}
+		    	}
+		    	if (type == 'up') {
+	    			if (_thisobj.prev().hasClass('son')) {
+						obj = _thisobj.prevUntil('.parent').last().prev();
+	    			} else {
+	    				obj = _thisobj.prev();
+	    			}
+
+	    			if (_thisobj.next().hasClass('son')) {
+	    				var temp = _thisobj.nextUntil('.parent');
+		    			obj.before(temp);
+		    			temp.eq(0).before(_thisobj);
+		    		} else {
+		    			obj.before(_thisobj);
+		    		}
+		    	}
+		    	if (type == 'start') {
+		    		if (_thisobj.next().hasClass('son')) {
+		    			var temp = _thisobj.nextUntil('.parent');
+		    			$('tr.parent').eq(0).before(temp);
+		    			temp.eq(0).before(_thisobj);
+		    		} else {
+		    			$('tr.parent').eq(0).before(_thisobj);
+		    		}
+		    	}
+		    	if (type == 'end') {
+		    		if (_thisobj.next().hasClass('son')) {
+		    			var temp = _thisobj.nextUntil('.parent');
+		    			$('tr').last().after(_thisobj);
+		    			_thisobj.after(temp);
+		    		} else {
+		    			$('tr').last().after(_thisobj);
+		    		}
+		    	}
+		    	//获取排序ID顺序
+		    	$('tr.parent').each(function(){
+		    		var id = $(this).data('con_id');
+		    		idArr.push(id);
+		    	});
+	    	}
+	    	_this.updateSort(idArr);
 	    	_this.sortInit();
 	    });
+	},
+	updateSort: function(idArr)
+	{
+		API.post(URI+'set/index', {'sort': idArr, 'opt': 'sort'}, function(res){
+			if (res.code == 200) {
+    			successTips(res.message);
+    		} else {
+    			errorTips(res.message);
+    		}
+		});
 	},
 	sortInit:function()
 	{
@@ -101,7 +192,6 @@ var FEATURE = {
 			if ($(this).prev().hasClass('son')) {
 				$(this).prev().find('[data-sort="end"], [data-sort="down"]').attr('disabled', 'disabled');
 			}
-
 			if ($(this).next().hasClass('son')) {
 				$(this).next().find('[data-sort="start"], [data-sort="up"]').attr('disabled', 'disabled');
 			}

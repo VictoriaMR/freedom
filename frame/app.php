@@ -45,7 +45,8 @@ class App
             call_user_func_array([self::autoload($class), $info['func']], []);
             $this->end();
         } else {
-            throw new \Exception(implode('->', [self::autoload($class), $info['func']]) .' was not exist!', 1);
+             dd(445566);
+            throw new \Exception(implode('->', [$class, $info['func']]) .' was not exist!', 1);
         }
     }
 

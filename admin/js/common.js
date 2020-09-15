@@ -3,7 +3,7 @@ var API = {
 		var returnData = {};
 		$.ajax( {
 		    url: url,
-		    async: false,
+		    async: true,
 		    type: 'GET',
 		    dataType: 'json',
 			data: param,
@@ -21,7 +21,7 @@ var API = {
 		var returnData = {};
 		$.ajax( {
 		    url: url,
-		    async: false,
+		    async: true,
 		    type: 'POST',
 		    dataType: 'json',
 			data: param,

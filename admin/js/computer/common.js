@@ -65,9 +65,6 @@ function addRightTips(info,type,delay)
     if(typeof delay == 'undefined'){
         delay = 5000;
     }
-
-    // info = info.replace(/\n/g,'<br>');
-
     if($('#rightTips').length==0) {
         $('body').append('<div id="rightTips"></div>');
         if(!isFramePage()){

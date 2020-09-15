@@ -23,6 +23,9 @@ class SetController extends Controller
 			case 'delete':
 				$this->featureDelete();
 				break;
+			case 'sort':
+				$this->updateSort();
+				break;
 		}
 
 		Html::addCss(['index']);
@@ -46,11 +49,23 @@ class SetController extends Controller
 		return view();
 	}
 
+	public function updateSort()
+	{
+		$sort = ipost('sort');
+		if (empty($sort))
+			return $this->result(10000, false, ['message'=>'缺失参数']);
+		foreach ($sort as $key => $value) {
+			$this->baseService->updateDataById($value, ['sort'=>$key]);
+		}
+		$this->baseService->deleteCache();
+		return $this->result(200, true, ['message' => '排序成功']);
+	}
+
 	protected function featureDelete()
 	{
 		$conId = (int) ipost('con_id');
 		if (empty($conId))
-			return $this->result(10000, false, ['message'=>'缺失ID']);
+			return $this->result(10000, false, ['message'=>'缺失参数']);
 
 		//先删除子类 再删除 主类
 		if ($this->baseService->isParent($conId))
@@ -130,36 +145,49 @@ class SetController extends Controller
 			$data = $this->getFile($path);
 			if (empty($data)) continue;
 			foreach ($data as $v) {
+				if (strpos($v, 'jquery') !== false || strpos($v, 'bootstrap') !== false) continue;
 				$len = strrpos($v, '.');
 				$functionName = 'compress'.$type;
-				// ini_set('memory_limit', 0);
-				dd($this->$functionName(file_get_contents($v)));
-				file_put_contents(substr($v, 0, $len).'.min'.substr($v, $len), $this->$functionName(file_get_contents($v)));
+				$this->$functionName($v, substr($v, 0, $len).'.min'.substr($v, $len));
 			}
 		}
-
 		$this->result(200, true, '压缩完成');
 	}
 
-	protected function compressjs($buffer)
+	protected function compressjs($jsFile, $newFile)
 	{
-		dd($buffer);
-		if (empty($buffer)) return '';
-		$packer = new \frame\Packer($buffer);
-		$buffer = $packer->pack();
-		return $buffer;
+		$file = fopen($jsFile, 'r');
+		
+		$js = '';
+		$kuai = false;
+		while(! feof($file)) {
+			$temp = trim(fgets($file));
+			if ($kuai && substr($temp, 0, 1) != '*') $kuai = false;
+			if ($kuai) continue;
+			if (substr($temp, 0, 2) == '/*' && substr($temp, -2, 2) == '*/') continue;
+			if (substr($temp, 0, 2) == '/*') $kuai = true;
+			if ($kuai) continue;
+			if (substr($temp, 0, 2) == '//') continue;
+			if (empty($temp)) continue;
+			$temp = preg_replace("/\s(?=\s)/", "\\1", $temp);
+			$temp = explode('//', $temp)[0];
+			$js .= $temp.PHP_EOL;
+		}
+		//关闭被打开的文件
+		fclose($file);
+	  	return file_put_contents($newFile, trim($js));
 	}
 
-	protected function compresscss($buffer)
+	protected function compresscss($cssFile, $newFile)
 	{
-		if (empty($buffer)) return '';
+		$css = file_get_contents($cssFile);
 		//去除注释
-	  	$buffer = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $buffer);
+	  	$css = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $css);
 	  	//去除多个空格
-	  	$buffer = preg_replace("/\s(?=\s)/", "\\1", $buffer);
+	  	$css = preg_replace("/\s(?=\s)/", "\\1", $css);
 	  	//去除换行
-	  	$buffer = str_replace(["\r", "\n", "\t", ';}',' '], ['', '', '', '}', ''], $buffer);
-	  	return $buffer;
+	  	$css = str_replace(["\r", "\n", "\t", ';}',': ', ' {', '{ ', '; '], ['', '', '', '}', ':', '{', '{', ';'], $css);
+	  	return file_put_contents($newFile, $css);
 	}
 
 	protected function getFile($dir)

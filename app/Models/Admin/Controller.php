@@ -19,7 +19,7 @@ class Controller extends BaseModel
     public function getList($where = [])
     {
     	return $this->where($where)
-    				->orderBy('sort', 'desc')
+    				->orderBy('sort', 'asc')
     				->get();
     }
 
