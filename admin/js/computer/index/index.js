@@ -45,7 +45,7 @@ var INDEX = {
 			$('[data-feature-id='+temp+']').trigger('click');
 		
 		temp = localStorage.getItem('toggle');
-		if (temp == 'open')
+		if (temp != 'close-left')
 			$('#left-one .toggle').trigger('click');
 
 	},
