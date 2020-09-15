@@ -29,10 +29,10 @@ class ShowController extends Controller
 
 	protected function rebootSystem()
 	{
-		if (is_cli())
-			$cmd = 'shutdown -r now';
-		else
+		if (substr(php_uname(), 0, 7) == 'Windows')
 			$cmd = 'shutdown -r -t 0';
+		else
+			$cmd = ROOT_PATH.'bash/reboot.sh';
 		exec($cmd);
 		$this->result(200, true, '执行成功');
 	}

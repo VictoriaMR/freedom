@@ -1,2 +1,2 @@
-#!/bin/bash 
-reboot
+#!/bin/bash
+/usr/sbin/reboot

@@ -11,9 +11,6 @@ class SystemService extends BaseService
     		case 'Linux':
  				$info = $this->sysLinux();
  				break;
-	 		case 'FreeBSD':
-			 	$info = $this->sysFreebsd();
-			 	break;
 		 	case 'WINNT':
 			 	$info = $this->sysWindows();
 			 	break;
@@ -54,13 +51,13 @@ class SystemService extends BaseService
 		if(false === ($str = @file('/proc/meminfo'))) return false;
         $str = $this->str2array($str);
 		$res['mem_total'] = round($str['MemTotal'] / 1024, 2);
-		$res['mem_free'] = round(($str['MemFree'] + $str['MemAvailable']) / 1024, 2);
+		$res['mem_free'] = round(($str['MemFree']) / 1024, 2);
         $res['mem_used'] = round($res['mem_total'] - $res['mem_free'], 2);
 		$res['mem_percent'] = round($res['mem_used'] /  $res['mem_total'] * 100, 2);
 
 		// cpu 利用率
 		if (false === ($str = @file('/proc/loadavg'))) return false;
-		$res['load_avg'] = explode(' ', $str[0])[0] * 100;
+		$res['load_avg'] = round(explode(' ', $str[0])[0] * 100, 2);
 
         //系统负载
         $res['server_load'] = round($res['mem_percent'] * 0.5 + $res['load_avg'] * 0.5, 2);
@@ -74,7 +71,7 @@ class SystemService extends BaseService
         $res['disk_total'] = $str[1] ?? '';
         $res['disk_free'] = $str[3] ?? '';
         $res['disk_used'] = $str[2] ?? '';
-        $res['disk_percent'] = $str[4] ?? '';
+        $res['disk_percent'] = trim($str[4] ?? '', '%');
 
         //网络
         if (false === ($str = @file('/proc/net/dev'))) return false;
