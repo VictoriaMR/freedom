@@ -4,10 +4,19 @@ var INDEX = {
 		this.getInfo();
 		this.start();
 		this.net.init();
+		//重启
+		$('.reboot').on('click', function(){
+			API.post(URI+'show/index', {opt: 'reboot'}, function(){
+				if (res.code == 200)
+					successTips(res.message);
+				else
+					errorTips(res.message);
+			});
+		});
 	},
 	getInfo: function()
 	{
-		API.post(URI+'index/getSystemInfo', {}, function(res){
+		API.post(URI+'show/index', {opt: 'info'}, function(res){
 			INDEX.infoInit(res.data);
 		});
 	},

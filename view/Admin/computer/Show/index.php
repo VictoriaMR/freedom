@@ -8,7 +8,7 @@
                 <span class="margin-left-10">运行时间:</span>
                 <span id="running"></span>
             </div>
-			<a class="right color-green position menu_set" href="javascript:;">重启</a>
+			<a class="right color-green position reboot" href="javascript:;">重启</a>
 		</div>
 		<div class="server bgf margin-top-14">
             <div class="title color-6 font-16 container-fluid">

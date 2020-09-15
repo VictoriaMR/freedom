@@ -24,11 +24,4 @@ class IndexController extends Controller
 
 		return view();
 	}
-
-	public function getSystemInfo()
-	{
-		$systemService = make('App/Services/SystemService');
-		$info = $systemService->getInfo();
-		$this->result(200, $info);
-	}
 }
