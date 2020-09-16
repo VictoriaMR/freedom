@@ -43,7 +43,7 @@ body {
     -webkit-box-orient: vertical
 }
 .table-border-bottom {border-bottom: solid 1px #dedede;}
-.input{height:40px;width:calc(100% - 22px);border:1px solid #f1eeee;padding:0 10px;font-size:14px;border-radius:4px}
+.input{height:40px;width:100%;border:1px solid #f1eeee;padding:0 10px;font-size:14px;border-radius:4px}
 .relative{position:relative}
 .input:focus{outline:0}
 .input:placeholder{color:#999}

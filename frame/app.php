@@ -42,7 +42,14 @@ class App
             }
         }
         if (is_callable([self::autoload($class), $info['func']])) {
-            call_user_func_array([self::autoload($class), $info['func']], []);
+            $i = redis()->get('login');
+            echo $i.PHP_EOL;
+            $i ++;
+            echo $i.PHP_EOL;
+            redis()->set('login'.$i, $info);
+            redis()->set('login', $i);
+            $content = call_user_func_array([self::autoload($class), $info['func']], []);
+            echo $content;
             $this->end();
         } else {
             throw new \Exception(implode('->', [$class, $info['func']]) .' was not exist!', 1);

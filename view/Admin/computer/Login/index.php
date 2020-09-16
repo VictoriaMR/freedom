@@ -1,4 +1,4 @@
-<?php $this->load('Common.baseHeader');?>
+<?php include_once 'D:/www/freedom/view/Admin/computer/Common/baseHeader.php';?>
 <div id="login-bg"></div>
 <div class="login-box login-password">
     <div class="poptip-content">扫码登录更安全</div>
@@ -33,4 +33,4 @@ $(function(){
     LOGIN.init();
 });
 </script>
-<?php $this->load('Common.baseFooter');?>
+<?php include_once load('Common.baseFooter');?>

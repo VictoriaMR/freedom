@@ -43,7 +43,7 @@ function env($name = '', $replace = '')
 }
 function view($template = '')
 {
-	return \frame\View::getInstance()->display($template);
+	return \frame\View::getInstance()->fetch($template);
 }
 function fetch($template = '')
 {
@@ -107,9 +107,11 @@ function is_cli()
 {
     return preg_match('/cli/i', php_sapi_name()) ? true : false;
 }
-function load($name)
+function load($template)
 {
-    return \frame\View::load($name);
+    $template = (APP_PATH ? APP_PATH.'.' : '').(APP_TEMPLATE_TYPE ? (isMobile() ? 'mobile.' : 'computer.') : '').$template;
+    $template = 'view/'.strtr($template, '.', '/');
+    return ROOT_PATH.$template.'.php';
 }
 function paginator()
 {
