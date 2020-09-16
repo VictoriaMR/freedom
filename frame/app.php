@@ -37,15 +37,14 @@ class App
             if ($info['class'] == 'Home') {
                 \frame\Html::addCss(['iconfont'], true);
             } else {
-                \frame\Html::addCss(['layer', 'font', 'space', 'bootstrap', 'datepicker'], true);
-                \frame\Html::addJs(['common', 'button', 'modal'], true);
+                \frame\Html::addCss(['layer', 'font', 'space', 'bootstrap', 'bootstrap-plugin'], true);
+                \frame\Html::addJs(['common', 'bootstrap', 'bootstrap-plugin', 'button', 'modal'], true);
             }
         }
         if (is_callable([self::autoload($class), $info['func']])) {
             call_user_func_array([self::autoload($class), $info['func']], []);
             $this->end();
         } else {
-             dd(445566);
             throw new \Exception(implode('->', [$class, $info['func']]) .' was not exist!', 1);
         }
     }

@@ -1,4 +1,4 @@
-*{margin:0;outline:0 none;padding:0}
+*{margin:0;outline:0 none;padding:0;-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;}
 body,button,input,select,textarea{line-height:1.4;color:#333; font-family: 'Segoe UI', Helvetica, Arial, '宋体', sans-serif;font-size:13px}
 ul,ol{list-style:none}
 h1,h2,h3,h4,h5,h6{font-weight: normal;}
@@ -63,6 +63,8 @@ body {
 .bgf{background:#fff}
 .bgf2{background:#f2f2f2}
 .clear{clear: both;}
+.flex{display: flex;}
+.flex-1{flex: 1;}
 /*主体样式*/
 .switch_botton {
     width: 64px;
@@ -137,19 +139,6 @@ body {
     display: none;
     z-index: 99;
 }
-
-.centerShow form .input-group {
-    margin-bottom: 15px;
-}
-
-.centerShow .form-control {
-	width: calc(100% - 26px) !important;
-}
-
-.centerShow select.form-control {
-	width: 100% !important;
-}
-
 
 #rightTips {
     position: fixed;

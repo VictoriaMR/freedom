@@ -16,6 +16,7 @@ class AdminerController extends Controller
 		$page = iget('page', 1);
 		$size = iget('size', 20);
 		$keyword = iget('keyword', '');
+		$status = iget('status', '');
 		$where = [];
 		if (!empty($keyword))
 			$where['name, nickname, mobile'] = ['like', '%'.$keyword.'%'];
@@ -30,6 +31,8 @@ class AdminerController extends Controller
 
 		$this->assign('list', $list ?? []);
 		$this->assign('paginator', $paginator);
+		$this->assign('keyword', $keyword);
+		$this->assign('status', $status);
 
 		return view();
 	}

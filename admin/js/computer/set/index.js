@@ -209,6 +209,9 @@ var FEATURE = {
 				}
 			}
 		});
+		if (typeof data.icon != 'undefined') {
+			$('#dealbox .selectpicker').selectpicker('refresh');
+		}
 		if (typeof data.status != 'undefined') {
 			if (data.status == 0) {
 				$('#dealbox [name="status"]').val(0).parents('.input-group').find('.switch_status').removeClass('on').addClass('off');

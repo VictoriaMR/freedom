@@ -64,7 +64,6 @@
                 data-name="<?php echo $v['name'];?>"
                 data-name_en="<?php echo $v['name_en'];?>"
                 data-status="<?php echo $v['status'];?>"
-                data-icon="<?php echo $v['icon'];?>"
                 data-sort="<?php echo $v['sort'];?>"
                 class="son"
             >
@@ -111,37 +110,38 @@
         <input type="hidden" class="form-control" name="parent_id" value="0">
         <button type="button" class="close" aria-hidden="true">&times;</button>
         <h3 class="margin-bottom-14 font-600 font-16">新增功能</h3>
-        <div class="input-group">
+        <div class="input-group margin-bottom-14">
             <div class="input-group-addon"><span>系统功能名称：</span></div>
             <input type="text" class="form-control" name="name" required="required" maxlength="30" value="" autocomplete="off">
         </div>
-        <div class="input-group">
+        <div class="input-group margin-bottom-14">
             <div class="input-group-addon"><span>控制器名称：</span></div>
             <input type="text" class="form-control" name="name_en" required="required" maxlength="30" value="" autocomplete="off">
         </div>
-        <div class="input-group">
+        <div class="input-group margin-bottom-14">
             <div class="input-group-addon"><span>状态：</span></div>
             <div class="form-control">
-                <div class="switch_botton status margin-top-6" data-status="1">
+                <div class="switch_botton status" data-status="1">
                     <div class="switch_status on"></div>
                 </div>
                 <input type="hidden" name="status" value="1">
             </div>
         </div>
-        <div class="input-group">
+        <div class="input-group margin-bottom-14">
             <div class="input-group-addon"><span>图标：</span></div>
-            <select class="form-control" name="icon">
-                <option value="">请选择</option>
+            <select 
+                class="form-control selectpicker" 
+                title="请选择图标" 
+                name="icon"
+            >
                 <?php if (!empty($iconList)) { ?>
                 <?php foreach ($iconList as $key => $value) { ?>
-                <option value="<?php echo $value['name'];?>">
-                    <?php echo $value['name'];?>
-                </option>
+                <option data-content="<div class='flex'><span class='img'><img src='<?php echo $value['url'];?>'/></span><div class='flex-1'><?php echo $value['name'];?></div></div>" value="<?php echo $value['name'];?>"><?php echo $value['name'];?></option>
                 <?php } ?>
                 <?php } ?>
             </select>
         </div>
-        <div class="input-group">
+        <div class="input-group margin-bottom-14">
             <div class="input-group-addon"><span>排序：</span></div>
             <input type="text" class="form-control" name="sort" maxlength="2" value="" autocomplete="off">
         </div>
