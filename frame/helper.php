@@ -43,7 +43,7 @@ function env($name = '', $replace = '')
 }
 function view($template = '')
 {
-	return \frame\View::getInstance()->fetch($template);
+	return \frame\View::getInstance()->display($template);
 }
 function fetch($template = '')
 {
@@ -109,6 +109,7 @@ function is_cli()
 }
 function load($template)
 {
+    return \frame\View::load($template);
     $template = (APP_PATH ? APP_PATH.'.' : '').(APP_TEMPLATE_TYPE ? (isMobile() ? 'mobile.' : 'computer.') : '').$template;
     $template = 'view/'.strtr($template, '.', '/');
     return ROOT_PATH.$template.'.php';

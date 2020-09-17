@@ -24,6 +24,8 @@ class View
         }
         extract(self::$data);
         include($template);
+        $this->clear();
+        return true;
     }
 
     private function getTemplate($template) 
@@ -41,6 +43,11 @@ class View
             }
         }
         return ROOT_PATH.$template.'.php';
+    }
+
+    private function clear()
+    {
+        self::$data = [];
     }
 
     public function fetch($template = '')
@@ -61,11 +68,9 @@ class View
         return $this;
     }
 
-    public static function load($template = '')
+    public function load($template = '')
     {
         if (empty($template)) return false;
-        // extract(self::$data);
-        $template = self::getInstance()->getTemplate((APP_PATH ? APP_PATH.'.' : '').(APP_TEMPLATE_TYPE ? (isMobile() ? 'mobile.' : 'computer.') : '').$template);
-        return $template;
+        return $this->display((APP_PATH ? APP_PATH.'.' : '').(APP_TEMPLATE_TYPE ? (isMobile() ? 'mobile.' : 'computer.') : '').$template);
     }
 }

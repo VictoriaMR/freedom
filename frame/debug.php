@@ -63,6 +63,6 @@ class Debug
         }
         assign('trace', $trace);
         assign('runtime', $runtime);
-        echo view('frame/pagetrace');
+        return view('frame/pagetrace');
 	}
 }

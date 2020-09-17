@@ -29,7 +29,7 @@ class App
         $class = 'App\\Http\\Controllers\\'.($info['class'] ? $info['class'].'\\' : '').$info['path'].'Controller';
         //中间组件
         $handle = make('App\Http\Middleware\VerifyToken');
-        $handle = $handle->handle($info);
+        $handle->handle($info);
         //公共样式
         if (!isAjax()) {
             \frame\Html::addJs(['jquery'], true);
@@ -42,15 +42,11 @@ class App
             }
         }
         if (is_callable([self::autoload($class), $info['func']])) {
-            $i = redis()->get('login');
-            echo $i.PHP_EOL;
-            $i ++;
-            echo $i.PHP_EOL;
-            redis()->set('login'.$i, $info);
-            redis()->set('login', $i);
-            $content = call_user_func_array([self::autoload($class), $info['func']], []);
-            echo $content;
-            $this->end();
+            call_user_func_array([self::autoload($class), $info['func']], []);
+            if (env('APP_DEBUG'))
+                $this->end(in_array(implode('/', $info), ['Admin/Index/index']));
+            else 
+                exit();
         } else {
             throw new \Exception(implode('->', [$class, $info['func']]) .' was not exist!', 1);
         }
@@ -89,10 +85,10 @@ class App
     	return self::autoload($abstract);
     }
 
-    protected function end()
+    protected function end($show = true)
     {   
         // 应用调试模式
-        if (env('APP_DEBUG'))
+        if (env('APP_DEBUG') && $show)
             \frame\Debug::debugInit();
         exit();
     }
@@ -127,6 +123,6 @@ class App
 
         $message = rtrim($message, PHP_EOL);
 
-        return error_log("\r\n[{$now}] {$server} {$remote} {$method} {$current_uri}\r\n{$info}{$message}---------------------------------------------------------------", 3, $destination);
+        return error_log("\r\n[{$now}] {$server} {$remote} {$method} {$current_uri}\r\n{$info}{$message}\r\n---------------------------------------------------------------", 3, $destination);
     }
 }

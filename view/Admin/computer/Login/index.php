@@ -1,4 +1,4 @@
-<?php include_once 'D:/www/freedom/view/Admin/computer/Common/baseHeader.php';?>
+<?php $this->load('Common.baseHeader');?>
 <div id="login-bg"></div>
 <div class="login-box login-password">
     <div class="poptip-content">扫码登录更安全</div>
@@ -10,7 +10,6 @@
         <div id="login-error" style="display: none;">
             <div id="login-error-msg" class="left margin-left-4"></div>
         </div>
-        <input type="hidden" name="verify_code" value="<?php echo $login_code;?>">
         <div class="margin-bottom-20">
             <input type="input" class="input" name="phone" placeholder="账号" autocomplete="off">
         </div>
@@ -33,4 +32,4 @@ $(function(){
     LOGIN.init();
 });
 </script>
-<?php include_once load('Common.baseFooter');?>
+<?php $this->load('Common.baseFooter');?>

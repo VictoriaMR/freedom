@@ -29,5 +29,6 @@ class VerifyToken
                     redirect(url('login'));
                 break;
         }
+        return true;
     }
 }

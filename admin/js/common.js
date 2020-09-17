@@ -7,9 +7,6 @@ var API = {
 		    type: 'GET',
 		    dataType: 'json',
 			data: param,
-			headers: {
-	          "Content-Type": "application/json"
-	        },
 		    success: function(data, textStatus, jqXHR){
 		        if (callback) callback(data);
 				returnData = data;
@@ -28,9 +25,6 @@ var API = {
 		    type: 'POST',
 		    dataType: 'json',
 			data: param,
-			headers: {
-	          "Content-Type": "application/json"
-	        },
 		    success: function(data, textStatus, jqXHR){
 		        if (callback) callback(data);
 				returnData = data;

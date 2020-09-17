@@ -10,4 +10,5 @@ require_once ROOT_PATH.'frame/env.php';
 ini_set('date.timezone', 'Asia/Shanghai');
 define('APP_PATH', 'Home');
 define('APP_DOMAIN', env('APP_DOMAIN'));
+define('APP_TEMPLATE_TYPE', true);
 require_once ROOT_PATH.'frame/start.php';
