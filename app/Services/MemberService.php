@@ -257,9 +257,16 @@ class MemberService extends BaseService
 
     public function getList($where = [], $page=1, $size=20, $orderby=[])
     {
-        return $this->baseModel->where($where)
+        $list = $this->baseModel->where($where)
                                 ->page($page, $size)
                                 ->orderBy($orderby)
                                 ->get();
+        if (!empty($list)) {
+            foreach ($list as $key => $value) {
+                $value['avatar'] = !empty($value['avatar']) ? url('upload'.DS.$value['avatar']) : $this->getDefaultAvatar($value['mem_id'], $value['sex']);
+                $list[$key] = $value;
+            }
+        }
+        return $list;
     }
 }

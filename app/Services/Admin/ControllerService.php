@@ -36,6 +36,15 @@ class ControllerService extends BaseService
         return $this->listFormat($list);
     }
 
+    public function getListByIds($id)
+    {
+        if (empty($id)) return [];
+        if (!is_array($id)) $id = explode(',', $id);
+        $where['con_id'] = ['in', $id]; 
+        $list = $this->baseModel->getList($where);
+        return $list;
+    }
+
     public function getListCache() 
     {
         $list = redis()->get(self::CACHE_LIST_KEY);

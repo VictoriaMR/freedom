@@ -22,9 +22,22 @@ class AdminerController extends Controller
 			$where['name, nickname, mobile'] = ['like', '%'.$keyword.'%'];
 
 		$memberService = make('App/Services/Admin/MemberService');
+		$constrollService = make('App/Services/Admin/ControllerService');
+
 		$total = $memberService->getTotal($where);
 		if ($total > 0) {
 			$list = $memberService->getList($where, $page, $size);
+			if (!empty($list)) {
+				foreach ($list as $key => $value) {
+					if (!empty($value['rule'])) {
+						$temp = $constrollService->getListByIds($value['rule']);
+						$value['rule_text'] = implode(',', array_column($temp, 'name'));
+					} else {
+						$value['rule_text'] = '';
+					}
+					$list[$key] = $value;
+				}
+			}
 		}
 
 		$paginator = paginator()->make($size, $total, $page);

@@ -32,7 +32,7 @@ var URI = "<?php echo APP_DOMAIN;?>";
 </div>
 <?php } ?>
 <?php if (!empty($tabs)) { ?>
-<div class="container-fluid" style="margin: 15px 0;">
+<div class="container-fluid margin-bottom-10 margin-top-10">
     <ul class="nav nav-tabs common-tabs">
         <?php foreach ($tabs as $key => $val) {?>
         <li <?php if ($val['name_en'] == $func){?>class="active"<?php } ?>>
